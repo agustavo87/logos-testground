@@ -1,0 +1,129 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+
+
+
+/* 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap'); */
+
+/* 
+body {
+    font-family: 'Roboto', sans-serif;
+    padding: 0 0rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+header.claro {
+    color: darkslategray;
+    background: #d5e5ff;
+    padding: 1rem 0 0.5rem 3rem;
+    width: calc(100% + 3rem);
+    margin: 0px 0 0px -3rem;
+    border-bottom: solid 1px lightblue;
+    display: flex;
+    justify-content: center;
+}
+
+header a {
+    margin: 0.25rem auto;
+    font-weight: 500;
+}
+
+h1 {
+    font-weight: 700;
+    color: darkslategray;
+    background: #f1fff5;
+    padding: 1rem 0 0.5rem 3rem;
+    width: calc(100% + 3rem);
+    margin: 0px 0 0px 0rem;
+    border-bottom: solid 1px lightblue;
+}
+
+p {
+    margin: 0.5rem 0.25rem 0.25rem 3rem;
+}
+
+.container-main {
+    margin-top: 1.5rem;
+}
+
+h2,h3,h4 {
+    color: #55b599;
+    font-weight: 700;
+    margin: 0.5rem 0.25rem 0.25rem 3rem;
+
+}
+
+small {
+    font-size: 0.9em;
+    font-weight: 300;
+}
+
+.login {
+    min-width: 10rem;
+    max-width: 15rem;
+    margin: 3rem auto;
+    padding: 2rem 2rem 3rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background:#fcfffa;
+    font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: purple;
+}
+
+a:hover {
+    color: blueviolet;
+}
+a:active {
+    color: violet;
+}
+
+
+input[type=email],
+input[type=password],
+input[type=text] {
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    margin: 3px 0 12px 0;
+    width: 100%;
+    outline: none;
+    border: solid 1px lightgray;
+}
+
+input[type=submit],
+input[type=reset] {
+    margin: 15px auto 5px auto;
+    padding: 0.8rem 1.25rem;
+    outline: none;
+    background: palegreen;
+    border: none;
+}
+
+input[type=submit]:hover,
+input[type=reset]:hover {
+    background: powderblue;
+    cursor: pointer;
+}
+
+
+input[type=submit]:active,
+input[type=reset]:active {
+    background: lightskyblue;
+    cursor: pointer;
+}
+
+label {
+    font-weight: 500;
+}
+
+ */
