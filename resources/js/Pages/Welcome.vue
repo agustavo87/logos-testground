@@ -1,7 +1,7 @@
 <template>
   <arete-container>
-      <arete-header-1>Bienvenido
-        {{$page.props.user ? $page.props.user.name : 'forastero'}}!
+      <arete-header-1>
+        {{ $trans('messages.greet.someone', {args: {name: name } } ) }}
         </arete-header-1>
       <div>
         <p>Este es tu mensaje: <em>{{msg}}</em></p>
@@ -33,5 +33,10 @@
       auth: Boolean,
       user: Object,
     },
+    computed: {
+      name() {
+        return this.$page.props.user ? this.$page.props.user.name : 'forastero'
+      }
+    }
   }
 </script>

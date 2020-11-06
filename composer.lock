@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b5335c6298fc81efc60f193079cd2f6",
+    "content-hash": "8737e248a121d80acc8c39f81b332c27",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -584,6 +584,67 @@
                 }
             ],
             "time": "2020-10-22T13:57:20+00:00"
+        },
+        {
+            "name": "genl/matice",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GENL/matice.git",
+                "reference": "6e56d21695d2e67072dcffaa5d27f030e4bf758d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GENL/matice/zipball/6e56d21695d2e67072dcffaa5d27f030e4bf758d",
+                "reference": "6e56d21695d2e67072dcffaa5d27f030e4bf758d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=5.4@dev"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Genl\\Matice\\MaticeServiceProvider"
+                    ],
+                    "aliases": {
+                        "Matice": "Genl\\Matice\\Facades\\Matice"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Genl\\Matice\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ekcel Ekoumelong",
+                    "email": "bigcodole@gmail.com",
+                    "homepage": "https://ekcel-portofolio.firebaseapp.com"
+                }
+            ],
+            "description": "Use your Laravel translations in JavaScript. Generates a Blade directive exporting all of your Laravel translations and provides a nice trans() helper function in JavaScript.",
+            "homepage": "https://github.com/genl/matice",
+            "keywords": [
+                "laravel",
+                "matice",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/GENL/matice/issues",
+                "source": "https://github.com/GENL/matice/tree/1.1.1"
+            },
+            "time": "2020-10-16T02:41:29+00:00"
         },
         {
             "name": "graham-campbell/result-type",

@@ -4,8 +4,30 @@ import { App, plugin } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import VueMeta from 'vue-meta'
 import { InertiaProgress } from '@inertiajs/progress'
-import route from 'ziggy';
+
 import { Ziggy } from '../assets/js/ziggy';
+import route from 'ziggy';
+import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
+
+Vue.mixin({
+  methods: {
+      $trans: trans,
+      $__: __,
+      $transChoice: transChoice,
+      $setLocale: (locale) => {
+        setLocale(locale);
+        app.$forceUpdate() // Refresh the vue instance after locale change.
+      },
+      // The current locale
+      $locale() {
+          return getLocale()
+      },
+      // A listing of the available locales
+      $locales() {
+          return locales()
+      }
+  },
+})
 
 InertiaProgress.init({
   // The delay after which the progress bar will
@@ -35,8 +57,6 @@ Vue.mixin({
     route: (name, params, absolute) => route(name, params, absolute, Ziggy),
   },
 });
-window.myZiggy = Ziggy;
-window.route = route;
 
 const el = document.getElementById('app');
 
@@ -49,3 +69,4 @@ new Vue({
   }),
 }).$mount(el)
 
+setLocale('es');
