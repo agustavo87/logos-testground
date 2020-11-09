@@ -41,6 +41,7 @@
                     @endif
                 </div>
             @endif
+           
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
@@ -53,11 +54,9 @@
 
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="flex justify-center">
-                <a href="/home" class="links">Inicio</a>
-                <a href="/login" class="links">Iniciar Sesión</a>
-                <a href="/register" class="links">Registrarse</a>
-
-
+                <a href="{{ route('home') }}" class="links">Inicio</a>
+                <a href="{{ route('auth.login.show') }}" class="links">Iniciar Sesión</a>
+                <a href="{{ route('auth.register.show') }}" class="links">Registrarse</a>
                 </div>
                 </div>
 

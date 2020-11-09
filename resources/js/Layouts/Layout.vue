@@ -10,7 +10,7 @@
       </nav>
       <div v-if="$page.props.user" class="ml-8 flex flex-col">
           <div>{{ $page.props.user.name }}</div>
-          <inertia-link href="/logout"
+          <inertia-link :href="route('auth.logout')"
             class="text-sm text-blue-300 hover:text-blue-100"          
           >Salir</inertia-link>
       </div>

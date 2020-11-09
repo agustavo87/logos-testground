@@ -37,7 +37,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             // Authentication passed...
             // return redirect()->intended('dashboard');
-            return redirect()->intended('/home');
+            return redirect()->route('home');
         } 
         return response([
             'resultado' => 'conexión fallida',
@@ -56,7 +56,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/home');
+        return redirect()->route('home');
     }
 
     

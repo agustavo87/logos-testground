@@ -1,11 +1,31 @@
 <template>
   <arete-container>
       <arete-header-1>
-        {{ $trans('messages.greet.someone', {args: {name: name } } ) }}
+        {{ appName }}: {{ $trans('messages.greet.someone', {args: {name: name } } ) }}
         </arete-header-1>
       <div>
+        <p class="text-xs text-right">
+          <strong>Lenguajes</strong><br>
+          Actual:<em>{{ $locale() }}</em> <br>
+          Disponibles: <em>{{ $locales() }}</em>
+        </p>
         <p>Este es tu mensaje: <em>{{msg}}</em></p>
       </div>
+      <p>
+        Llevas aquí: 5 {{ $transChoice('messages.seconds', 5)}}<br>
+        Tienes permiso para 1 {{ $transChoice('messages.minutes', 0) }}
+      </p>
+      <p>
+        Además {{ $__('You eat it doubled') }}.
+      </p>
+      <p>
+        Por otra parte:
+        <ul>
+          <li>{{ $__('auth.failed') }}</li>
+          <li>{{ $__("validation.string", { args: { attribute:"tu vieja" } } ) }}</li>
+        </ul>
+      </p>
+
   </arete-container>
 </template>
 
@@ -28,11 +48,7 @@
       }
     },
 
-    props: {
-      msg: String,
-      auth: Boolean,
-      user: Object,
-    },
+    props: ['msg', 'appName', 'user'],
     computed: {
       name() {
         return this.$page.props.user ? this.$page.props.user.name : 'forastero'

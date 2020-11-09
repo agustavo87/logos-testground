@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8737e248a121d80acc8c39f81b332c27",
+    "content-hash": "86a80700cd68769fd8345a32cfce2da3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -587,24 +587,23 @@
         },
         {
             "name": "genl/matice",
-            "version": "1.1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GENL/matice.git",
-                "reference": "6e56d21695d2e67072dcffaa5d27f030e4bf758d"
+                "reference": "41891228e0464bd19d4182e840a42c6bab2704d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GENL/matice/zipball/6e56d21695d2e67072dcffaa5d27f030e4bf758d",
-                "reference": "6e56d21695d2e67072dcffaa5d27f030e4bf758d",
+                "url": "https://api.github.com/repos/GENL/matice/zipball/41891228e0464bd19d4182e840a42c6bab2704d2",
+                "reference": "41891228e0464bd19d4182e840a42c6bab2704d2",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": ">=5.4@dev"
+                "laravel/framework": ">=6.0@dev"
             },
             "require-dev": {
-                "orchestra/testbench": "^5.0",
-                "phpunit/phpunit": "^8.0"
+                "orchestra/testbench": "^5.0"
             },
             "type": "library",
             "extra": {
@@ -642,9 +641,9 @@
             ],
             "support": {
                 "issues": "https://github.com/GENL/matice/issues",
-                "source": "https://github.com/GENL/matice/tree/1.1.1"
+                "source": "https://github.com/GENL/matice/tree/master"
             },
-            "time": "2020-10-16T02:41:29+00:00"
+            "time": "2020-11-04T15:25:01+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1007,6 +1006,51 @@
                 }
             ],
             "time": "2020-10-29T11:38:41+00:00"
+        },
+        {
+            "name": "laravel-lang/lang",
+            "version": "7.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Laravel-Lang/lang.git",
+                "reference": "c1519eb78139869ab8829912adde5f58ca09552f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/c1519eb78139869ab8829912adde5f58ca09552f",
+                "reference": "c1519eb78139869ab8829912adde5f58ca09552f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "suggest": {
+                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+                "overtrue/laravel-lang": "Command to add languages in your project"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Laravel-Lang Team"
+                }
+            ],
+            "description": "Languages for Laravel",
+            "keywords": [
+                "lang",
+                "languages",
+                "laravel",
+                "lpm"
+            ],
+            "support": {
+                "issues": "https://github.com/Laravel-Lang/lang/issues",
+                "source": "https://github.com/Laravel-Lang/lang/tree/7.0.8"
+            },
+            "time": "2020-10-11T08:55:55+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7438,7 +7482,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "genl/matice": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

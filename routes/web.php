@@ -22,33 +22,93 @@ use App\Http\Controllers\LogosController;
 |
 */
 
+/*
 Route::get('/', function () {
-    return view('welcome');
-})->name('landing');
+    return 'Hogar sin locale';
+}) ;
+*/
 
-Route::get('/login', function () {
-    return Inertia::render('Auth/Login');
-})->name('auth.login.show');
+Route::group([
+    'prefix' => '{locale?}',
+    'where' => ['locale' => '[a-z]{2}'],
+    'middleware' => ['setDefaultLocaleURL', 'setLocale']
+], function() {
+    Route::get('/', function (Request $request) {
+        return view('welcome');
+    })->name('landing');
 
-Route::post('/login', [AuthController::class, 'authenticate'])
-    ->name('auth.login');
-Route::get('/logout', [AuthController::class, 'logout'])
-    ->name('auth.logout');
+    Route::get('home', function () {
+     return Inertia::render('Welcome', [
+         'msg' => 'Hola Gustavo',
+     ]);
+    })->name('home');
 
-Route::get('/register', function () {
-    return Inertia::render('Auth/Register');
-})->name('auth.register.show');
+    Route::get('login', function () {
+        return Inertia::render('Auth/Login');
+    })->name('auth.login.show');
 
-Route::post('/register', [RegisterController::class, 'register'])
-    ->name('auth.register');
+    Route::post('login', [AuthController::class, 'authenticate'])
+        ->name('auth.login');
 
-Route::get('/home', function () {
-    return Inertia::render('Welcome', [
-        'msg' => 'Hola Gustavo',
-        'auth' => Auth::check(),
-        'user' => Auth::user()
-    ]);
-})->name('home');
+    Route::get('logout', [AuthController::class, 'logout'])
+        ->name('auth.logout');
 
-Route::get('/logos', [LogosController::class, 'create'])
-    ->name('logos.show');
+    Route::get('register', function () {
+        return Inertia::render('Auth/Register', [
+            'countries' => config('locale.countries'),
+            'defLang' => config('locale.langs.default')
+        ]);
+    })->name('auth.register.show');
+
+    Route::post('register', [RegisterController::class, 'register'])
+        ->name('auth.register');
+
+    Route::get('logos', [LogosController::class, 'create'])
+        ->name('logos.show');
+    });
+
+
+
+
+// Route::get('welcome/{locale}', function ($locale) {
+//     if (! in_array($locale, ['en', 'es'])) {
+//         abort(404);
+//     }
+
+//     App::setLocale($locale);
+//     return Inertia::render('Welcome', [
+//         'msg' => 'Hola Gustavo',
+//     ]);
+
+//     //
+// });
+
+// Route::get('/', function () {
+//     App::setLocale('es');
+//     return view('welcome');
+// })->name('landing');
+
+// Route::get('/login', function () {
+//     return Inertia::render('Auth/Login');
+// })->name('auth.login.show');
+
+// Route::post('/login', [AuthController::class, 'authenticate'])
+//     ->name('auth.login');
+// Route::get('/logout', [AuthController::class, 'logout'])
+//     ->name('auth.logout');
+
+// Route::get('/register', function () {
+//     return Inertia::render('Auth/Register');
+// })->name('auth.register.show');
+
+// Route::post('/register', [RegisterController::class, 'register'])
+//     ->name('auth.register');
+
+// Route::get('/home', function () {
+//     return Inertia::render('Welcome', [
+//         'msg' => 'Hola Gustavo',
+//     ]);
+// })->name('home');
+
+// Route::get('/logos', [LogosController::class, 'create'])
+//     ->name('logos.show');

@@ -5,7 +5,7 @@ import Vue from 'vue'
 import VueMeta from 'vue-meta'
 import { InertiaProgress } from '@inertiajs/progress'
 
-import { Ziggy } from '../assets/js/ziggy';
+// import { Ziggy } from '../assets/js/ziggy';
 import route from 'ziggy';
 import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
 
@@ -69,4 +69,3 @@ new Vue({
   }),
 }).$mount(el)
 
-setLocale('es');

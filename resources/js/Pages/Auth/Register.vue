@@ -10,6 +10,17 @@
       <arete-text-input id="email" type="email" v-model="form.email" placeholder="juan@example.com" required />
       <arete-label for="password">Password:</arete-label>
       <arete-text-input type="password" id="password" v-model="form.password" required />
+      <arete-label for="country">Elige un país:</arete-label>
+      <arete-select id="country" v-model="form.country" required placeholder="selecciona un país...">
+        <option 
+          v-for="countryCode in Object.keys(countries)" 
+          :key="countryCode" 
+          :value="countryCode"
+        >
+          {{ countries[countryCode].name }}  
+        </option>
+      </arete-select>
+      
       <div class="flex justify-end">
         <arete-button type="submit" class="m-2">Enviar</arete-button>
         <arete-button type="reset" class="m-2">Borrar</arete-button>
@@ -25,6 +36,7 @@
   import AreteLabel from '../../Components/Label'
   import AreteHeader1 from '../../Components/Header1'
   import AreteContainer from '../../Components/Container'
+  import AreteSelect from '../../Components/Select'
 
   export default {
     metaInfo() {
@@ -37,22 +49,37 @@
       AreteButton,
       AreteTextInput,
       AreteLabel,
+      AreteSelect,
       AreteHeader1,
       AreteContainer
     },
+    props: ['countries', 'defLang'],
     data () {
       return {
         form: {
           name: null,
           email: null,
           password: null,
+          country: null,
         }
+      }
+    },
+    computed: {
+      countryLang() {
+        return this.form.country ? this.countries[this.form.country].lang : this.defLang;
+      },
+      fullForm() {
+        let newForm = {
+          locale: this.countryLang
+        }
+        return Object.assign(newForm, this.form)
       }
     },
     methods: {
       submit() {
         console.log('enviando...')
-        this.$inertia.post('/register', this.form)
+        
+        this.$inertia.post(route('auth.register'), this.fullForm)
       }
     }
   }

@@ -56,7 +56,7 @@
     methods: {
       submit() {
         console.log('enviando...')
-        this.$inertia.post('/login', this.form)
+        this.$inertia.post('/es/login', this.form)
       }
     }
   }
