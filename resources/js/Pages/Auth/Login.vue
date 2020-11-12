@@ -55,8 +55,8 @@
     },
     methods: {
       submit() {
-        console.log('enviando...')
         this.$inertia.post('/es/login', this.form)
+        // axios.post('/es/login', this.form);
       }
     }
   }

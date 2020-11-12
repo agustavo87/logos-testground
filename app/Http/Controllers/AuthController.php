@@ -37,6 +37,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             // Authentication passed...
             // return redirect()->intended('dashboard');
+            // return redirect()->route('home');
+            if($request->inertia()) {
+                return response('', 409)
+                    ->header('X-Inertia-Location', route('home'));
+            }
             return redirect()->route('home');
         } 
         return response([

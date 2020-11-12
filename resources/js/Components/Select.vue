@@ -3,6 +3,7 @@
     class="p-2 text-red-100leading-tight border border-gray-400 rounded-sm focus:outline-none"
     :class="selected"
     @input="$emit('input', $event.target.value)"
+    :value="value"
   >
     <option 
       value="" 

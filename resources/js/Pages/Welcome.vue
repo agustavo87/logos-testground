@@ -6,7 +6,7 @@
       <div>
         <p class="text-xs text-right">
           <strong>Lenguajes</strong><br>
-          Actual:<em>{{ $locale() }}</em> <br>
+          Actual: <em>{{ $locale() }}</em> <br>
           Disponibles: <em>{{ $locales() }}</em>
         </p>
         <p>Este es tu mensaje: <em>{{msg}}</em></p>
@@ -26,6 +26,10 @@
         </ul>
       </p>
 
+      <p>
+        Inertia Locale : {{ $page.props.locale}}
+      </p>
+
   </arete-container>
 </template>
 
@@ -41,6 +45,18 @@
       AreteHeader1,
       AreteContainer
     },
+
+    // porque se es redirigido aquí luego de iniciar sesión
+    // lo cual puede cambiar el idioma, pero Vue no se entera
+    // puesto que esto cambia del lado del servidor
+    // y no se actualiza Matice.
+    // beforeMount () {
+    //     let newLocale = this.$page.props.locale
+    //     console.log ('actualizando locale a: ', newLocale);
+    //     this.$setLocale(newLocale);
+    // },
+
+
 
     metaInfo() {
       return {

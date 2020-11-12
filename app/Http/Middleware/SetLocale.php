@@ -25,6 +25,7 @@ class SetLocale
     public function handle(Request $request, Closure $next)
     {
         $uriLocale = $this->locale->inURL();
+        $locale = $this->locale->inURL();
 
         if(Auth::check()) {
             $locale = Auth::user()->locale;

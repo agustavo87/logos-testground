@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Logos;
+use Illuminate\Support\Facades\Route;
 
 
 class Locale {
@@ -18,7 +19,11 @@ class Locale {
     }
 
     public function replaceLocaleURL(String $locale) {
-        $newLocaleRoute = url()->toRoute(request()->route(), ['locale' => $locale], false);
+        
+        $parameters = Route::getCurrentRoute()->originalParameters();
+        $parameters['locale'] = $locale;
+        // ddd($parameters);
+        $newLocaleRoute = url()->toRoute(request()->route(), $parameters, false);
         return $newLocaleRoute;
     }
 

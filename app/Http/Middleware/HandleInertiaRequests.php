@@ -43,9 +43,10 @@ class HandleInertiaRequests extends Middleware
 
             // Lazily
             'user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email')
+                ? $request->user()->only('id', 'name', 'email', 'country', 'locale')
                 : null,
-            'currentRouteName' => Route::currentRouteName()
+            'currentRouteName' => Route::currentRouteName(),
+            'locale' => fn () => app()->getLocale()
         ]);
     }
 }

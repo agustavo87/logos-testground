@@ -1,14 +1,23 @@
 require('./bootstrap');
 
-import { App, plugin } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import VueMeta from 'vue-meta'
+import { Inertia } from '@inertiajs/inertia'
+import { App, plugin } from '@inertiajs/inertia-vue'
 import { InertiaProgress } from '@inertiajs/progress'
 
 // import { Ziggy } from '../assets/js/ziggy';
 import route from 'ziggy';
+// depends on object "Matice" frome @translations blade directive.
 import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
 
+Vue.mixin({
+  methods: {
+    route: (name, params, absolute) => route(name, params, absolute, Ziggy),
+  },
+});
+
+// Matice -translations-.
 Vue.mixin({
   methods: {
       $trans: trans,
@@ -16,11 +25,12 @@ Vue.mixin({
       $transChoice: transChoice,
       $setLocale: (locale) => {
         setLocale(locale);
-        app.$forceUpdate() // Refresh the vue instance after locale change.
+        myApp.$forceUpdate() // Refresh the vue instance after locale change.
       },
       // The current locale
       $locale() {
-          return getLocale()
+          // return getLocale()
+          return this.$inertia.page.props.locale;
       },
       // A listing of the available locales
       $locales() {
@@ -32,7 +42,7 @@ Vue.mixin({
 InertiaProgress.init({
   // The delay after which the progress bar will
   // appear during navigation, in milliseconds.
-  delay: 0,
+  delay: 250,
 
   // The color of the progress bar.
   color: '#aef',
@@ -44,28 +54,25 @@ InertiaProgress.init({
   showSpinner: false,
 })
 
+
+
 Vue.use(VueMeta, {
   // optional pluginOptions
   refreshOnceOnNavigation: true
 })
 
-Vue.use(plugin);
-
-
-Vue.mixin({
-  methods: {
-    route: (name, params, absolute) => route(name, params, absolute, Ziggy),
-  },
-});
-
 const el = document.getElementById('app');
 
-new Vue({
+const myApp = new Vue({
   render: h => h(App, {
     props: {
       initialPage: JSON.parse(el.dataset.page),
-      resolveComponent: name => require(`./Pages/${name}`).default,
+      resolveComponent: function (name) {
+        return require(`./Pages/${name}`).default
+      },
     },
   }),
-}).$mount(el)
+})
 
+myApp.$mount(el)
+window.myApp = myApp;
