@@ -37,16 +37,26 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        // ddd($request->session());
         return array_merge(parent::share($request), [
             // Synchronously
             'appName' => config('app.name'),
 
             // Lazily
             'user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'country', 'locale')
+                ? $request->user()->only('id', 'name', 'email', 'country', 'language')
                 : null,
             'currentRouteName' => Route::currentRouteName(),
-            'locale' => fn () => app()->getLocale()
+            'locale' => fn () => app()->getLocale(),
+            'errors' => function () use($request) {
+                $errors = $request->session()->get('errors');
+                if($errors) {
+                    $bag = $request->session()->get('errors')->getBag('default')->getMessages();
+                    return $bag;
+                } else {
+                    return (object) [];
+                }
+            }
         ]);
     }
 }

@@ -64,7 +64,6 @@
           >Salir</inertia-link
         >
       </div>
-      <p></p>
     </header>
 
     <article class="pl-2 pt-5">

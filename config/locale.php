@@ -6,7 +6,7 @@
  */
 
 return [
-    'langs' => [
+    'languages' => [
         'supported' => ['en', 'es'],
         'names' => [
             'en' => 'English',
@@ -18,19 +18,19 @@ return [
     'countries' => [
         'AR' => [
             'name' => 'Argentina',
-            'lang' => 'es'
+            'language' => 'es'
         ],
         'ES' => [
             'name' => 'España',
-            'lang' => 'es'
+            'language' => 'es'
         ],
         'CO' => [
             'name' => 'Colombia',
-            'lang' => 'es'
+            'language' => 'es'
         ],
         'US' => [
             'name' => 'United States',
-            'lang' => 'en'
+            'language' => 'en'
         ]
 
     ]

@@ -25,16 +25,15 @@ class SetLocale
     public function handle(Request $request, Closure $next)
     {
         $uriLocale = $this->locale->inURL();
-        $locale = $this->locale->inURL();
 
         if(Auth::check()) {
-            $locale = Auth::user()->locale;
+            $locale = Auth::user()->language;
             if ($locale != $uriLocale) {
                 return redirect($this->locale->replaceLocaleURL($locale));
             }
         } else {
             if (!$this->locale->supported($uriLocale))  {
-                return redirect($this->locale->replaceLocaleURL(config('locale.langs.default')));
+                return redirect($this->locale->replaceLocaleURL(config('locale.languages.default')));
             }
             $locale = $uriLocale;
         }

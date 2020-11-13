@@ -11,7 +11,7 @@ class Locale {
     public $langsSupported;
 
     public function __construct() {
-        $this->langsSupported = config('locale.langs.supported');
+        $this->langsSupported = config('locale.languages.supported');
     }
 
     public function showRequest() {

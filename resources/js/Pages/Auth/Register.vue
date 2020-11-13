@@ -66,11 +66,11 @@
     },
     computed: {
       countryLang() {
-        return this.form.country ? this.countries[this.form.country].lang : this.defLang;
+        return this.form.country ? this.countries[this.form.country].language : this.defLang;
       },
       fullForm() {
         let newForm = {
-          locale: this.countryLang
+          language: this.countryLang
         }
         return Object.assign(newForm, this.form)
       }

@@ -37,7 +37,7 @@
     },
     computed: {
       countryLang() {
-        return this.form.country ? this.countries[this.form.country].lang : this.defLang;
+        return this.form.country ? this.countries[this.form.country].language : this.defLang;
       },
       fullForm() {
         let newForm = {

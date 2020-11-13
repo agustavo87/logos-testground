@@ -16,7 +16,7 @@ class RegisterController extends Controller
             'email' => 'required', 
             'name' => 'required',
             'country' => 'required', 
-            'locale' => 'required'
+            'language' => 'required'
             ]);
         
         $data['password'] = Hash::make($request->password);

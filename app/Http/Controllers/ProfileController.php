@@ -25,11 +25,18 @@ class ProfileController extends Controller
 
     public function update($lang, User $user, Request $request) {
         $data = $request->validate([
-            'name' => 'required',
-            'locale' => 'required|email',
-            ]);
-        
+            'name' =>  ['required', 'min:2', 'max:255'],
+            'country' => ['required', 'size:2'],
+            'language' => ['nullable', 'size:2']
+            ]);        
 
+        $languageChange = $data['language'] != $user->language;
+        $user->update($data);
+
+        if($languageChange && $request->inertia()) {
+            return  response('', 409)
+            ->header('X-Inertia-Location', url()->previous());
+        } 
 
         return back();
     }

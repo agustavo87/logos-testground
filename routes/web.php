@@ -67,7 +67,7 @@ Route::group([
     Route::get('register', function () {
         return Inertia::render('Auth/Register', [
             'countries' => config('locale.countries'),
-            'defLang' => config('locale.langs.default')
+            'defLang' => config('locale.languages.default')
         ]);
     })->name('auth.register.show');
 

@@ -2,7 +2,6 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import VueMeta from 'vue-meta'
-import { Inertia } from '@inertiajs/inertia'
 import { App, plugin } from '@inertiajs/inertia-vue'
 import { InertiaProgress } from '@inertiajs/progress'
 
@@ -60,6 +59,8 @@ Vue.use(VueMeta, {
   // optional pluginOptions
   refreshOnceOnNavigation: true
 })
+
+Vue.use(plugin);
 
 const el = document.getElementById('app');
 

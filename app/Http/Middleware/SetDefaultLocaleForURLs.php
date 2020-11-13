@@ -28,10 +28,10 @@ class SetDefaultLocaleForURLs
         $uriLocale = $this->locale->inURL();
         URL::defaults([
             'locale' => Auth::check() ? 
-                Auth::user()->locale 
+                Auth::user()->language 
                 : $this->locale->supported($uriLocale) ? 
                     $uriLocale 
-                    : config('locale.langs.default')
+                    : config('locale.languages.default')
         ]);
 
         return $next($request);

@@ -13,6 +13,7 @@
         placeholder="Juan Perez"
         required
       />
+      <arete-input-error :errors="errors.name"></arete-input-error>
       <arete-label for="country">País:</arete-label>
       <arete-select
         id="country"
@@ -28,14 +29,14 @@
           {{ countries[countryCode].name }}
         </option>
       </arete-select>
+      <arete-input-error :errors="errors.country"></arete-input-error>
       <p class="text-xs text-gray-800 m-3">
         {{ user }}
       </p>
-      <ul>
-        <li v-for="error in form.errors()">
-          {{ error }}
-        </li>
-      </ul>
+      <p>
+        {{ errors }}
+      </p>
+
       <div class="flex justify-end">
         <arete-button type="submit" class="m-2">Enviar</arete-button>
         <arete-button type="reset" class="m-2">Borrar</arete-button>
@@ -52,6 +53,7 @@ import AreteLabel from "../../Components/Label";
 import AreteHeader1 from "../../Components/Header1";
 import AreteContainer from "../../Components/Container";
 import AreteSelect from "../../Components/Select";
+import AreteInputError from "../../Components/InputError";
 
 export default {
   metaInfo() {
@@ -67,33 +69,34 @@ export default {
     AreteSelect,
     AreteHeader1,
     AreteContainer,
+    AreteInputError
   },
-  props: ["countries", "user"],
+  props: ["countries", "user", "errors"],
   data() {
     return {
-      form: this.$inertia.form(
-        {
-          name: this.user.name,
-          country: this.user.country,
-        },
-        {
-          bag: "updateProfileInformation",
-          resetOnSuccess: true,
-        }
-      ),
+      form: {
+        name: this.user.name,
+        country: this.user.country,
+      },
     };
   },
   computed: {
     countryLang() {
       return this.form.country
-        ? this.countries[this.form.country].lang
+        ? this.countries[this.form.country].language
         : this.defLang;
     },
+      fullForm() {
+        let newForm = {
+          language: this.countryLang
+        }
+        return Object.assign(newForm, this.form)
+      }
   },
   methods: {
     submit() {
       console.log("enviando...");
-      this.form.put(route("profile.update", this.user.id), this.fullForm);
+      this.$inertia.put(route("profile.update", this.user.id), this.fullForm);
     },
   },
 };
