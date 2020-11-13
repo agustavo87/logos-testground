@@ -9,22 +9,5 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
-    {
-        // $data = $request->only('email', 'name', 'country', 'locale');
-        $data = $request->validate([
-            'email' => 'required', 
-            'name' => 'required',
-            'country' => 'required', 
-            'language' => 'required'
-            ]);
-        
-        $data['password'] = Hash::make($request->password);
-        // dd($data);
-
-        $user = User::create($data);
-        Auth::login($user, true);
-        
-        return redirect()->route('home');
-    }
+    
 }

@@ -96,7 +96,7 @@ export default {
   methods: {
     submit() {
       console.log("enviando...");
-      this.$inertia.put(route("profile.update", this.user.id), this.fullForm);
+      this.$inertia.put(route("user.update", this.user.id), this.fullForm);
     },
   },
 };

@@ -55,7 +55,7 @@ Route::group([
     })->name('home');
 
     Route::get('login', function () {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('User/Login');
     })->name('auth.login.show');
 
     Route::post('login', [Ctrlr\AuthController::class, 'authenticate'])
@@ -64,25 +64,23 @@ Route::group([
     Route::get('logout', [Ctrlr\AuthController::class, 'logout'])
         ->name('auth.logout');
 
-    Route::get('register', function () {
-        return Inertia::render('Auth/Register', [
-            'countries' => config('locale.countries'),
-            'defLang' => config('locale.languages.default')
-        ]);
-    })->name('auth.register.show');
+    Route::name('user.')->group(function()  
+    {
+        Route::get('user/register',[Ctrlr\UserController::class, 'create'] )
+        ->name('register.show');
 
-    Route::post('register', [Ctrlr\RegisterController::class, 'register'])
-        ->name('auth.register');
+        Route::post('user', [Ctrlr\UserController::class, 'store'])
+            ->name('register');
 
-    
-    Route::get('profile/{user}', [Ctrlr\ProfileController::class, 'show'])
-        ->name('profile.show');
+        Route::get('user/{user}', [Ctrlr\UserController::class, 'show'])
+            ->name('show');
 
-    Route::get('profile/{user}/edit', [Ctrlr\ProfileController::class, 'edit'])
-        ->name('profile.edit');
+        Route::get('user/{user}/edit', [Ctrlr\UserController::class, 'edit'])
+            ->name('edit');
 
-    Route::put('profile/{user}', [Ctrlr\ProfileController::class, 'update'])
-        ->name('profile.update');
+        Route::put('user/{user}', [Ctrlr\UserController::class, 'update'])
+            ->name('update');
+    });
 
 
     Route::get('logos', [Ctrlr\LogosController::class, 'create'])

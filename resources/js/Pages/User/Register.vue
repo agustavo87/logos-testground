@@ -79,7 +79,7 @@
       submit() {
         console.log('enviando...')
         
-        this.$inertia.post(route('auth.register'), this.fullForm)
+        this.$inertia.post(route('user.register'), this.fullForm)
       }
     }
   }

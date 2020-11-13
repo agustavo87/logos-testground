@@ -27,24 +27,24 @@
         </arete-nav-item>
         <arete-nav-item
           inertia
-          :href="route('auth.register.show')"
-          :disabled="route().current('auth.register.show')"
+          :href="route('user.register.show')"
+          :disabled="route().current('user.register.show')"
           v-if="!$page.props.user"
         >
           Registrarse
         </arete-nav-item>
         <arete-nav-item
           inertia
-          :href="route('profile.show', [$page.props.user.id])"
-          :disabled="route().current('profile.show')"
+          :href="route('user.show', [$page.props.user.id])"
+          :disabled="route().current('user.show')"
           v-if="$page.props.user"
         >
           Mostrar Perfil
         </arete-nav-item>
         <arete-nav-item
           inertia
-          :href="route('profile.edit', [$page.props.user.id])"
-          :disabled="route().current('profile.edit')"
+          :href="route('user.edit', [$page.props.user.id])"
+          :disabled="route().current('user.edit')"
           v-if="$page.props.user"
         >
           Editar Perfil

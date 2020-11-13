@@ -56,7 +56,7 @@
                 <div class="flex justify-center">
                 <a href="{{ route('home') }}" class="links">Inicio</a>
                 <a href="{{ route('auth.login.show') }}" class="links">Iniciar Sesión</a>
-                <a href="{{ route('auth.register.show') }}" class="links">Registrarse</a>
+                <a href="{{ route('user.register.show') }}" class="links">Registrarse</a>
                 </div>
                 </div>
 
