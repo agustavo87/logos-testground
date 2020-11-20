@@ -8,6 +8,9 @@
     @translations
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" >
     <script src="{{ mix('/js/app.js') }}" defer></script>
+
+    {{-- Tailwind UI Inter Font --}}
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   </head>
     <body>
       @inertia

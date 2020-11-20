@@ -87,6 +87,12 @@ Route::group([
         ->name('logos.show');
     });
 
+    Route::get('stage/{experiment?}', function(Request $request, $experiment = null) {
+        $prefix = $experiment ? 'Experiments/' : 'Staging';
+        return Inertia::render($prefix .$experiment, [
+            'request' => $request,
+        ]);
+    });
     
 
 

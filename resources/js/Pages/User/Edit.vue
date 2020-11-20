@@ -30,13 +30,7 @@
         </option>
       </arete-select>
       <arete-input-error :errors="errors.country"></arete-input-error>
-      <p class="text-xs text-gray-800 m-3">
-        {{ user }}
-      </p>
-      <p>
-        {{ errors }}
-      </p>
-
+      <arete-processing :a-if="operando">Procesando...</arete-processing>
       <div class="flex justify-end">
         <arete-button type="submit" class="m-2">Enviar</arete-button>
         <arete-button type="reset" class="m-2">Borrar</arete-button>
@@ -54,6 +48,7 @@ import AreteHeader1 from "../../Components/Header1";
 import AreteContainer from "../../Components/Container";
 import AreteSelect from "../../Components/Select";
 import AreteInputError from "../../Components/InputError";
+import AreteProcessing from "../../Components/Processing";
 
 export default {
   metaInfo() {
@@ -69,7 +64,8 @@ export default {
     AreteSelect,
     AreteHeader1,
     AreteContainer,
-    AreteInputError
+    AreteInputError,
+    AreteProcessing
   },
   props: ["countries", "user", "errors"],
   data() {
@@ -78,6 +74,7 @@ export default {
         name: this.user.name,
         country: this.user.country,
       },
+      operando: false,
     };
   },
   computed: {
@@ -96,7 +93,18 @@ export default {
   methods: {
     submit() {
       console.log("enviando...");
-      this.$inertia.put(route("user.update", this.user.id), this.fullForm);
+      this.$inertia.put(route("user.update", this.user.id), this.fullForm, {
+        replace: true,
+        preseveState: true,
+        onStart: (visit) => {
+          console.log('iniciando... ', visit)  
+          this.operando = true;      
+          },
+        onFinish: () => {
+          console.log('visita concluida.')
+          this.operando = false;
+        }
+      });
     },
   },
 };

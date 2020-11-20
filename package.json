@@ -28,5 +28,7 @@
         "vue-meta": "^2.4.0",
         "vue-template-compiler": "^2.6.12"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@tailwindcss/ui": "^0.7.2"
+    }
 }
