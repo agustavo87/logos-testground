@@ -42,7 +42,8 @@ Route::group([
     'prefix' => '{locale?}',
     'where' => ['locale' => '[a-z]{2}'],
     'middleware' => ['setDefaultLocaleURL', 'setLocale']
-], function() {
+], function() 
+{
     Route::get('/', function (Request $request) {
         
         return view('welcome');
@@ -54,6 +55,7 @@ Route::group([
      ]);
     })->name('home');
 
+
     Route::get('login', function () {
         return Inertia::render('User/Login');
     })->name('auth.login.show');
@@ -63,6 +65,7 @@ Route::group([
 
     Route::get('logout', [Ctrlr\AuthController::class, 'logout'])
         ->name('auth.logout');
+
 
     Route::name('user.')->group(function()  
     {

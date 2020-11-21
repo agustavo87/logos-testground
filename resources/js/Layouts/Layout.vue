@@ -1,83 +1,39 @@
+// Queda pendiente hacer que los menús se cierren cuando se inicia un link de inertia.
 <template>
-  <main>
-    <header
-      class="flex justify-center p-2 bg-blue-600 font-medium text-blue-100"
-    >
-      <nav class="flex justify-center">
-        <arete-nav-item
-          :href="route('landing')"
-          :disabled="route().current('landing')"
-        >
-          Portada
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('home')"
-          :disabled="route().current('home')"
-        >
-          Inicio
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('auth.login.show')"
-          :disabled="route().current('auth.login.show')"
-          v-if="!$page.props.user"
-        >
-          Iniciar Sesión
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('user.register.show')"
-          :disabled="route().current('user.register.show')"
-          v-if="!$page.props.user"
-        >
-          Registrarse
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('user.show', [$page.props.user.id])"
-          :disabled="route().current('user.show')"
-          v-if="$page.props.user"
-        >
-          Mostrar Perfil
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('user.edit', [$page.props.user.id])"
-          :disabled="route().current('user.edit')"
-          v-if="$page.props.user"
-        >
-          Editar Perfil
-        </arete-nav-item>
-        <arete-nav-item
-          inertia
-          :href="route('logos.show')"
-          :disabled="route().current('logos.show')"
-          >Logos
-        </arete-nav-item>
-      </nav>
-      <div v-if="$page.props.user" class="ml-8 flex flex-col">
-        <div>{{ $page.props.user.name }}</div>
-        <inertia-link
-          :href="route('auth.logout')"
-          class="text-sm text-blue-300 hover:text-blue-100"
-          >Salir</inertia-link
-        >
-      </div>
-    </header>
-
-    <article class="pl-2 pt-5">
+  <div>
+    <arete-header :user="$page.props.user">
+      <nav-item 
+        :href="route('landing')" 
+        :current="route().current('landing')"
+      >
+        Portada
+      </nav-item>
+      <nav-item
+        inertia
+        :href="route('home')"
+        :current="route().current('home')"
+      >
+        Inicio
+      </nav-item>
+      <nav-item
+        inertia
+        :href="route('logos.show')"
+        :current="route().current('logos.show')"
+      > Logos </nav-item>
+    </arete-header>
+    <main>
       <slot />
-    </article>
-  </main>
+    </main>
+  </div>
 </template>
 
 <script>
-import AreteNavItem from "../Components/NavItem";
-
+import AreteHeader from "../Components/Header";
+import NavItem from "../Components/NavItem";
 export default {
   components: {
-    AreteNavItem,
-  }
+    AreteHeader,
+    NavItem,
+  },
 };
 </script>

@@ -1,32 +1,29 @@
 <template>
-<din-anchor 
-  :current="current" 
-  class="block px-2 mt-1 sm:mt-0 sm:ml-2 py-1 font-semibold rounded"
-  :class="classes"
-  v-bind="$attrs"
->
-  <slot></slot>
-</din-anchor>
-<!-- <component 
+<component 
   :is="componentName" 
   class="block px-2 mt-1 sm:mt-0 sm:ml-2 py-1 font-semibold rounded "
   :class="classes" 
   :href="href"
 >
   <slot></slot>
-</component> -->
+</component>
 </template>
 <script>
-import DinAnchor from './DinAnchor';
   export default {
     inheritAttrs:false,
-    components: {
-      DinAnchor
-    },
     props: {
       current: Boolean,
+      href: String,
+      inertia: Boolean
     },
     computed: {
+      componentName() {
+        if (this.current) {
+          return 'span'
+        } else {
+          return this.inertia ? 'inertia-link' : 'a' 
+        }
+      },
       classes() {
         return this.current
           ? 'text-white cursor-default'
