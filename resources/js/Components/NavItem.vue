@@ -1,20 +1,13 @@
 <template>
 <din-anchor 
   :current="current" 
-  class="block px-2 mt-1 sm:mt-0 sm:ml-2 py-1 font-semibold rounded"
+  class="block px-2 py-1 mt-1 sm:mt-0 sm:ml-2 font-semibold rounded"
   :class="classes"
   v-bind="$attrs"
 >
   <slot></slot>
 </din-anchor>
-<!-- <component 
-  :is="componentName" 
-  class="block px-2 mt-1 sm:mt-0 sm:ml-2 py-1 font-semibold rounded "
-  :class="classes" 
-  :href="href"
->
-  <slot></slot>
-</component> -->
+
 </template>
 <script>
 import DinAnchor from './DinAnchor';

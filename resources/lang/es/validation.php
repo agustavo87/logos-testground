@@ -12,6 +12,9 @@ return [
     |
     */
 
+    // Custom Validation Rules
+    'language'             => 'El formato de lenguaje no es válido.',
+
     'accepted'             => ':attribute debe ser aceptado.',
     'active_url'           => ':attribute no es una URL válida.',
     'after'                => ':attribute debe ser una fecha posterior a :date.',

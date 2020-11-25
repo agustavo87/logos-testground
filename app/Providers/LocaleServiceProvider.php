@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use App\Logos\Locale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class LocaleServiceProvider extends ServiceProvider implements DeferrableProvider
+class LocaleServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -24,12 +24,14 @@ class LocaleServiceProvider extends ServiceProvider implements DeferrableProvide
     }
 
     /**
-     * Get the services provided by the provider.
+     * Bootstrap any application services.
      *
-     * @return array
+     * @return void
      */
-    public function provides()
+    public function boot(Locale $locale)
     {
-        return [Locale::class, 'locale'];
+        Validator::extend('language', [$locale, 'validateLanguage']);
     }
+
+
 }

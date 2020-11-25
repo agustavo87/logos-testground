@@ -3,7 +3,7 @@
 namespace App\Logos;
 use Illuminate\Support\Facades\Route;
 
-
+// Hacer funciones estáticas
 class Locale {
 
     public $langPattern = "/^[a-z]{2}$/";
@@ -38,5 +38,15 @@ class Locale {
 
     public function supported($locale) {
         return in_array($locale, $this->langsSupported);
+    }
+
+    /**
+     * For Laravel Validator
+     * 
+     * 'language' rule
+     */
+    public function validateLanguage($attribute, $value, $parameters, $validator)
+    {
+        return $this->isValid($value) && $this->supported($value);
     }
 }

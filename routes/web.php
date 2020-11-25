@@ -55,7 +55,7 @@ Route::group([
      ]);
     })->name('home');
 
-
+ 
     Route::get('login', function () {
         return Inertia::render('User/Login');
     })->name('auth.login.show');
@@ -100,45 +100,4 @@ Route::group([
 
 
 
-// Route::get('welcome/{locale}', function ($locale) {
-//     if (! in_array($locale, ['en', 'es'])) {
-//         abort(404);
-//     }
-
-//     App::setLocale($locale);
-//     return Inertia::render('Welcome', [
-//         'msg' => 'Hola Gustavo',
-//     ]);
-
-//     //
-// });
-
-// Route::get('/', function () {
-//     App::setLocale('es');
-//     return view('welcome');
-// })->name('landing');
-
-// Route::get('/login', function () {
-//     return Inertia::render('Auth/Login');
-// })->name('auth.login.show');
-
-// Route::post('/login', [AuthController::class, 'authenticate'])
-//     ->name('auth.login');
-// Route::get('/logout', [AuthController::class, 'logout'])
-//     ->name('auth.logout');
-
-// Route::get('/register', function () {
-//     return Inertia::render('Auth/Register');
-// })->name('auth.register.show');
-
-// Route::post('/register', [RegisterController::class, 'register'])
-//     ->name('auth.register');
-
-// Route::get('/home', function () {
-//     return Inertia::render('Welcome', [
-//         'msg' => 'Hola Gustavo',
-//     ]);
-// })->name('home');
-
-// Route::get('/logos', [LogosController::class, 'create'])
-//     ->name('logos.show');
+    Route::put('/locale', [Ctrlr\LocaleController::class, 'update']);

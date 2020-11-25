@@ -16,57 +16,63 @@
     </div>
     </div>
     <nav :class="isOpen ? 'block' : 'hidden'" class="sm:block">
+      <!-- Navbar sm+ -->
       <div  class="text-sm px-2 pt-2 pb-4 sm:flex sm:p-0">
         <slot></slot>
+        
+        <!-- ícono idioma -->
+
+
         <account-dropdown class="hidden sm:block sm:ml-6" :user="user" :currentPage="route().current()"></account-dropdown>
       </div>
+      <!-- account dropdown mobile -->
       <div class="px-4 py-5 border-t border-gray-800 sm:hidden">
-          <div class="flex items-center" v-if="user">
-            <img src="../../img/panther-profile.png" alt="Gustavo" class="h-8 w-8 rounded-full border-2 border-gray-600  object-cover">
-            <span class="ml-3 text-white font-semibold">{{ user.name }}</span>
-          </div>
-          <div class="mt-4 text-sm">
-            <account-mobile-item 
-              inertia
-              :href="route('auth.login.show')"
-              :current="route().current('auth.login.show')" 
-              v-if="!user"
-              first 
-            >
-              Iniciar Sesión
-            </account-mobile-item>
-            <account-mobile-item 
-              inertia
-              :href="route('user.register.show')"
-              :current="route().current('user.register.show')"
-              v-if="!user"
-            >
-              Registrarse
-            </account-mobile-item>
-            <account-mobile-item 
-              inertia
-              :href="route('user.show', [user.id])"
-              :current="route().current('user.show')" 
-              v-if="user"
-            >
-              Mostrar Perfil
-            </account-mobile-item>
-            <account-mobile-item 
-              inertia
-              :href="route('user.edit', [user.id])"
-              :current="route().current('user.edit')" 
-              v-if="user"
-            >
-              Editar Perfil
-            </account-mobile-item>
-            <account-mobile-item 
-              inertia
-              :href="route('auth.logout')"
-              v-if="user"
-            >
-              Salir
-            </account-mobile-item>
-          </div>
+        <div class="flex items-center" v-if="user">
+          <img src="../../img/panther-profile.png" alt="Gustavo" class="h-8 w-8 rounded-full border-2 border-gray-600  object-cover">
+          <span class="ml-3 text-white font-semibold">{{ user.name }}</span>
+        </div>
+        <div class="mt-4 text-sm">
+          <account-mobile-item 
+            inertia
+            :href="route('auth.login.show')"
+            :current="route().current('auth.login.show')" 
+            v-if="!user"
+            first 
+          >
+            Iniciar Sesión
+          </account-mobile-item>
+          <account-mobile-item 
+            inertia
+            :href="route('user.register.show')"
+            :current="route().current('user.register.show')"
+            v-if="!user"
+          >
+            Registrarse
+          </account-mobile-item>
+          <account-mobile-item 
+            inertia
+            :href="route('user.show', [user.id])"
+            :current="route().current('user.show')" 
+            v-if="user"
+          >
+            Mostrar Perfil
+          </account-mobile-item>
+          <account-mobile-item 
+            inertia
+            :href="route('user.edit', [user.id])"
+            :current="route().current('user.edit')" 
+            v-if="user"
+          >
+            Editar Perfil
+          </account-mobile-item>
+          <account-mobile-item 
+            inertia
+            :href="route('auth.logout')"
+            v-if="user"
+          >
+            Salir
+          </account-mobile-item>
+        </div>
       </div>
     </nav>
 </header>
@@ -90,7 +96,7 @@ import AccountMobileItem from './AccountMobileItem'
     },
     data() {
       return {
-        isOpen: false
+        isOpen: true
       }
     },
 
