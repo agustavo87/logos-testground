@@ -31,6 +31,7 @@ class LocaleController extends Controller
             $user->save();
         }
 
+
         return response()->json([
             'language' => $user->language
         ]); 

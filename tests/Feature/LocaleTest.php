@@ -5,53 +5,29 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
-use Tests\TestCase;
+use Tests\FixturableTestCase as TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
 class LocaleTest extends TestCase
 {
     protected static string $languageA = 'es';
     protected static string $languageB = 'en';
-    protected static bool $initialized = false;
-    private User $user;
-    private static User $staticUser;
+    protected static $userId;
+    public static bool $verbose = true;
+    public static bool $debug = true;
 
-    private function beforeAll()
+
+    protected static function beforeAll()
     {
-        $this->user = User::factory()->create([
+        self::$userId = User::factory()->create([
             'language' => self::$languageA
-        ]);
-
-        self::$staticUser = $this->user;
+        ])->id;
     }
 
-    protected function setUp(): void 
+    protected static function afterAll()
     {
-        fwrite(STDOUT, __METHOD__ . "\n");
-        parent::setUp();
-        if (!self::$initialized) {
-            self::$initialized = true;
-            $this->beforeAll();
-        }
-        $this->beforeEach();
-    }
-
-    protected function beforeEach()
-    {
-        fwrite(STDOUT, __METHOD__ . "\n");
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        fwrite(STDOUT, __METHOD__ . "\n");
-        self::$staticUser->delete();
-    }
-
-    protected function tearDown(): void 
-    {
-        fwrite(STDOUT, __METHOD__ . "\n");
-        // $this->user->delete();
-        parent::tearDown();
+        User::find(self::$userId)->delete();
     }
 
     /**
@@ -61,18 +37,18 @@ class LocaleTest extends TestCase
      */
     public function testLocaleUpdate()
     {
-        fwrite(STDOUT, __METHOD__ . "\n");
+        $user = User::find(self::$userId);
+
         $this->assertEquals(
-            $this->user->language,
+            $user->language,
             self::$languageA
         );
-       
-        $response = $this->actingAs($this->user)
+
+        $response = $this->actingAs($user)
                          ->putJson("/locale", [
                              'language' => self::$languageB
                          ]);
 
-        var_dump($response->baseResponse->status());
 
         $response->assertStatus(200);
         $response->assertJson([
@@ -80,9 +56,52 @@ class LocaleTest extends TestCase
         ]);
 
         $this->assertEquals(
-            $this->user->language,
+            $user->language,
             self::$languageB
         );
     }
 
+    public function testRedirectToLocale()
+    {
+        $user = User::find(self::$userId);
+        $language = $user->language;
+
+        $response = $this->actingAs($user)
+                         ->get('/');
+
+        $response->assertRedirect();
+        $response->assertLocation('/' . $language);
+    }
+
+    public function testIdentificaLenguageEnUri()
+    {
+        $testLanguage = 'es';
+        $response = $this->get('/' . $testLanguage);
+
+        $locale = $this->app->make('locale');
+        $URL_Language = $locale->inURL();
+        $this->assertEquals($URL_Language, $testLanguage);
+    }
+
+    public function testRemplazaLenguajeEnUri()
+    {
+        $originalLanguage = 'es';
+        $replaceLanguage = 'en';
+        $originalRoute = route('home', ['locale' => $originalLanguage], false);
+        $this->log($originalRoute);
+        $response = $this->get($originalRoute);
+
+
+        $locale = $this->app->make('locale');
+        $newRoute = $locale->replaceLocaleURL($replaceLanguage);
+        $this->log($newRoute);
+        $this->assertNotEquals($originalRoute, $newRoute);
+
+        $segments = explode('/', $newRoute);
+        $segments = array_values(array_filter($segments, function ($value) {
+            return $value !== '';
+        }));
+        $lenguajeEnNuevaRuta = $segments[0];
+        $this->assertEquals($replaceLanguage, $lenguajeEnNuevaRuta);
+    }
 }

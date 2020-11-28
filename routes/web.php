@@ -1,19 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-
-// use App\Http\Controllers\AuthController;
-// use App\Http\Controllers\RegisterController;
-// use App\Http\Controllers\LogosController;
-// use App\Http\Controllers\ProfileController;
-
-use App\Http\Controllers as Ctrlr;
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,79 +11,79 @@ use App\Http\Controllers as Ctrlr;
 |
 */
 
-/*
-Route::get('/', function () {
-    return 'Hogar sin locale';
-}) ;
-*/
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use App\Http\Controllers\{
+    AuthController,
+    UserController,
+    LogosController,
+    LocaleController
+};
 
 /**
  * WARNING: IMPLICIT MODEL BINDING
  * The binding has to have the following parameters orders in the handler
  * 1st. the $lang prefix
- * after this, anythin.
+ * after this, anything.
  */
+
 Route::group([
     'prefix' => '{locale?}',
     'where' => ['locale' => '[a-z]{2}'],
     'middleware' => ['setDefaultLocaleURL', 'setLocale']
-], function() 
-{
+], function () {
     Route::get('/', function (Request $request) {
-        
+
         return view('welcome');
     })->name('landing');
 
     Route::get('home', function () {
-     return Inertia::render('Welcome', [
+        return Inertia::render('Welcome', [
          'msg' => 'Hola Gustavo',
-     ]);
+        ]);
     })->name('home');
 
- 
+
     Route::get('login', function () {
         return Inertia::render('User/Login');
     })->name('auth.login.show');
 
-    Route::post('login', [Ctrlr\AuthController::class, 'authenticate'])
+    Route::post('login', [AuthController::class, 'authenticate'])
         ->name('auth.login');
 
-    Route::get('logout', [Ctrlr\AuthController::class, 'logout'])
+    Route::get('logout', [AuthController::class, 'logout'])
         ->name('auth.logout');
 
 
-    Route::name('user.')->group(function()  
-    {
-        Route::get('user/register',[Ctrlr\UserController::class, 'create'] )
+    Route::name('user.')->group(function () {
+        Route::get('user/register', [UserController::class, 'create'])
         ->name('register.show');
 
-        Route::post('user', [Ctrlr\UserController::class, 'store'])
+        Route::post('user', [UserController::class, 'store'])
             ->name('register');
 
-        Route::get('user/{user}', [Ctrlr\UserController::class, 'show'])
+        Route::get('user/{user}', [UserController::class, 'show'])
             ->name('show');
 
-        Route::get('user/{user}/edit', [Ctrlr\UserController::class, 'edit'])
+        Route::get('user/{user}/edit', [UserController::class, 'edit'])
             ->name('edit');
 
-        Route::put('user/{user}', [Ctrlr\UserController::class, 'update'])
+        Route::put('user/{user}', [UserController::class, 'update'])
             ->name('update');
     });
 
 
-    Route::get('logos', [Ctrlr\LogosController::class, 'create'])
+    Route::get('logos', [LogosController::class, 'create'])
         ->name('logos.show');
-    });
+});
 
-    Route::get('stage/{experiment?}', function(Request $request, $experiment = null) {
+    Route::get('stage/{experiment?}', function (Request $request, $experiment = null) {
         $prefix = $experiment ? 'Experiments/' : 'Staging';
-        return Inertia::render($prefix .$experiment, [
+        return Inertia::render($prefix . $experiment, [
             'request' => $request,
         ]);
     });
-    
 
-
-
-    Route::put('/locale', [Ctrlr\LocaleController::class, 'update']);
+    Route::put('/locale', [LocaleController::class, 'update']);

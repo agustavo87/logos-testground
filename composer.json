@@ -23,8 +23,10 @@
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/collision": "5.0",
+        "pestphp/pest": "^0.3.13",
+        "pestphp/pest-plugin-laravel": "^0.3.0",
+        "phpunit/phpunit": "9.3.10"
     },
     "config": {
         "optimize-autoloader": true,
@@ -61,6 +63,6 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test": "phpunit --colors=always --testdox"
+        "test": "@php artisan test"
     }
 }

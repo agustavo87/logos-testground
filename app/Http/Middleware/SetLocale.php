@@ -12,9 +12,11 @@ class SetLocale
 
     public $locale;
 
-    public function __construct(Locale $locale) {
+    public function __construct(Locale $locale)
+    {
         $this->locale = $locale;
     }
+
     /**
      * Handle an incoming request.
      *
@@ -26,13 +28,13 @@ class SetLocale
     {
         $uriLocale = $this->locale->inURL();
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             $locale = Auth::user()->language;
             if ($locale != $uriLocale) {
                 return redirect($this->locale->replaceLocaleURL($locale));
             }
         } else {
-            if (!$this->locale->supported($uriLocale))  {
+            if (!$this->locale->supported($uriLocale)) {
                 return redirect($this->locale->replaceLocaleURL(config('locale.languages.default')));
             }
             $locale = $uriLocale;

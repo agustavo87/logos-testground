@@ -2,6 +2,7 @@
 
 namespace App\Logos;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 // Hacer funciones estáticas
 class Locale {
@@ -48,5 +49,10 @@ class Locale {
     public function validateLanguage($attribute, $value, $parameters, $validator)
     {
         return $this->isValid($value) && $this->supported($value);
+    }
+
+    public function probarMock($param)
+    {
+        return $param;
     }
 }
