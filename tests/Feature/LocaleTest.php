@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Tests\FixturableTestCase as TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 class LocaleTest extends TestCase
 {
@@ -17,6 +18,13 @@ class LocaleTest extends TestCase
     public static bool $verbose = true;
     public static bool $debug = true;
 
+    protected User $user;
+
+    /**
+     * Crea un modelo de usuario para ser usado en los tests.
+     *
+     * @return void
+     */
     protected static function beforeAll(): void
     {
         self::$userId = User::factory()->create([
@@ -24,9 +32,24 @@ class LocaleTest extends TestCase
         ])->id;
     }
 
+    /**
+     * Limpia la BD del modelo de usuario creado.
+     *
+     * @return void
+     */
     protected static function afterAll(): void
     {
         User::find(self::$userId)->delete();
+    }
+
+    /**
+     * Obtiene el usuario y lo guarda para uso posterior.
+     *
+     * @return void
+     */
+    public function beforeEach(): void
+    {
+        $this->user = User::find(self::$userId);
     }
 
     /**
@@ -34,20 +57,19 @@ class LocaleTest extends TestCase
      *
      * @return void
      */
-    public function testLocaleUpdate(): void
+    public function testUpdatesUserLanguageByJson(): void
     {
-        $user = User::find(self::$userId);
-
         $this->assertEquals(
-            $user->language,
+            $this->user->language,
             self::$languageA
         );
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
                          ->putJson("/locale", [
                              'language' => self::$languageB
                          ]);
 
+        $this->assertEquals(self::$languageB, App::getLocale());
 
         $response->assertStatus(200);
         $response->assertJson([
@@ -55,26 +77,36 @@ class LocaleTest extends TestCase
         ]);
 
         $this->assertEquals(
-            $user->language,
+            $this->user->language,
             self::$languageB
         );
     }
 
-    public function testValidatorsAreCallables(): void
+    /**
+     * The validators are callable.
+     *
+     * @return void
+     */
+    public function testValidatorsAreCallable(): void
     {
         $locale = $this->app->make('locale');
         $this->assertTrue(is_callable([$locale, 'validateValidLanguage']));
         $this->assertTrue(is_callable([$locale, 'validateSupportedLanguage']));
     }
 
-    public function testValidateLocaleChangeRequest(): void    
+    /**
+     * Valida que el lenguaje tenga un formato válido y/o sea soportado por
+     * la aplicación.
+     *
+     * @return void
+     */
+    public function testValidatesLanguageFormatAndSupport(): void
     {
         $invalidLanguage = "a2";
         $unsupportedLanguage = "fr";
-        $user = User::find(self::$userId);
 
         // Invalid language
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
                          ->putJson("/locale", [
                              'language' => $invalidLanguage
                          ]);
@@ -86,7 +118,7 @@ class LocaleTest extends TestCase
         $this->assertEquals($content->errors->language[0], __('validation.language_valid'));
 
         // Unsupported language
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
                          ->putJson("/locale", [
                              'language' => $unsupportedLanguage
                          ]);
@@ -98,19 +130,16 @@ class LocaleTest extends TestCase
         $this->assertEquals($content->errors->language[0], __('validation.language_supported'));
     }
 
-
-
     /**
      * El usuario es redireccionado de acuerdo a su lenguaje configurado.
      *
      * @return void
      */
-    public function testRedirectToLocale(): void
+    public function testRedirectsToSettedLanguageUri(): void
     {
-        $user = User::find(self::$userId);
-        $language = $user->language;
+        $language = $this->user->language;
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
                          ->get('/');
 
         $response->assertRedirect();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 use App\Logos\Locale;
 
 class LocaleController extends Controller
@@ -27,9 +28,14 @@ class LocaleController extends Controller
             $user->save();
         }
 
+        App::setLocale($data['language']);
 
-        return response()->json([
-            'language' => $user->language
-        ]);
+        if ($request->isJson()) {
+            return response()->json([
+                'language' => $user->language
+            ]);
+        }
+
+        return back()->with('language', $user->language);
     }
 }
