@@ -34,8 +34,8 @@ Route::group([
     'where' => ['locale' => '[a-z]{2}'],
     'middleware' => ['setDefaultLocaleURL', 'setLocale']
 ], function () {
-    Route::get('/', function (Request $request) {
 
+    Route::get('/', function (Request $request) {
         return view('welcome');
     })->name('landing');
 

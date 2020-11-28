@@ -30,7 +30,8 @@ class LocaleServiceProvider extends ServiceProvider
      */
     public function boot(Locale $locale)
     {
-        Validator::extend('language', [$locale, 'validateLanguage']);
+        Validator::extend('language_valid', [$locale, 'validateValidLanguage']);
+        Validator::extend('language_supported', [$locale, 'validateSupportedLanguage']);
     }
 
 

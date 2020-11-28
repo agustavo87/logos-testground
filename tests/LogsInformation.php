@@ -66,7 +66,7 @@ trait LogsInformation
     public static function toLoggable($input): string
     {
         if (!is_string($input)) {
-            return json_encode($input);
+            return print_r($input, true);
         }
         return $input;
     }

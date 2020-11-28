@@ -14,7 +14,8 @@ return [
     */
 
     // Custom Validation Rules
-    'language' => 'The language was invalid',
+    'language_valid'        => 'The language was invalid.',
+    'language_supported'    => 'Sorry, that language is currently not supported.',
 
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',

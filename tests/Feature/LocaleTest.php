@@ -17,25 +17,24 @@ class LocaleTest extends TestCase
     public static bool $verbose = true;
     public static bool $debug = true;
 
-
-    protected static function beforeAll()
+    protected static function beforeAll(): void
     {
         self::$userId = User::factory()->create([
             'language' => self::$languageA
         ])->id;
     }
 
-    protected static function afterAll()
+    protected static function afterAll(): void
     {
         User::find(self::$userId)->delete();
     }
 
     /**
-     * A basic feature test example.
+     * Actualiza el Lenguaje del usuario mediante una solicitud JSON.
      *
      * @return void
      */
-    public function testLocaleUpdate()
+    public function testLocaleUpdate(): void
     {
         $user = User::find(self::$userId);
 
@@ -61,7 +60,52 @@ class LocaleTest extends TestCase
         );
     }
 
-    public function testRedirectToLocale()
+    public function testValidatorsAreCallables(): void
+    {
+        $locale = $this->app->make('locale');
+        $this->assertTrue(is_callable([$locale, 'validateValidLanguage']));
+        $this->assertTrue(is_callable([$locale, 'validateSupportedLanguage']));
+    }
+
+    public function testValidateLocaleChangeRequest(): void    
+    {
+        $invalidLanguage = "a2";
+        $unsupportedLanguage = "fr";
+        $user = User::find(self::$userId);
+
+        // Invalid language
+        $response = $this->actingAs($user)
+                         ->putJson("/locale", [
+                             'language' => $invalidLanguage
+                         ]);
+        $content = json_decode($response->content());
+        $this->log($content);
+        $this->assertObjectHasAttribute('errors', $content);
+        $this->assertObjectHasAttribute('language', $content->errors);
+        $this->log($content->errors->language);
+        $this->assertEquals($content->errors->language[0], __('validation.language_valid'));
+
+        // Unsupported language
+        $response = $this->actingAs($user)
+                         ->putJson("/locale", [
+                             'language' => $unsupportedLanguage
+                         ]);
+        $content = json_decode($response->content());
+        $this->log($content);
+        $this->assertObjectHasAttribute('errors', $content);
+        $this->assertObjectHasAttribute('language', $content->errors);
+        $this->log($content->errors->language);
+        $this->assertEquals($content->errors->language[0], __('validation.language_supported'));
+    }
+
+
+
+    /**
+     * El usuario es redireccionado de acuerdo a su lenguaje configurado.
+     *
+     * @return void
+     */
+    public function testRedirectToLocale(): void
     {
         $user = User::find(self::$userId);
         $language = $user->language;
@@ -73,7 +117,12 @@ class LocaleTest extends TestCase
         $response->assertLocation('/' . $language);
     }
 
-    public function testIdentificaLenguageEnUri()
+    /**
+     * Obtiene el lenguaje en la URI.
+     *
+     * @return void
+     */
+    public function testIdentificaLenguageEnUri(): void
     {
         $testLanguage = 'es';
         $response = $this->get('/' . $testLanguage);
@@ -83,14 +132,18 @@ class LocaleTest extends TestCase
         $this->assertEquals($URL_Language, $testLanguage);
     }
 
-    public function testRemplazaLenguajeEnUri()
+    /**
+     * Reemplaza el lenguaje en la URI.
+     *
+     * @return void
+     */
+    public function testRemplazaLenguajeEnUri(): void
     {
         $originalLanguage = 'es';
         $replaceLanguage = 'en';
         $originalRoute = route('home', ['locale' => $originalLanguage], false);
         $this->log($originalRoute);
         $response = $this->get($originalRoute);
-
 
         $locale = $this->app->make('locale');
         $newRoute = $locale->replaceLocaleURL($replaceLanguage);

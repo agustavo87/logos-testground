@@ -1,26 +1,31 @@
 <?php
 
 namespace App\Logos;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 // Hacer funciones estáticas
-class Locale {
+class Locale
+{
 
     public $langPattern = "/^[a-z]{2}$/";
 
     public $langsSupported;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->langsSupported = config('locale.languages.supported');
     }
 
-    public function showRequest() {
+    public function showRequest()
+    {
         return request();
     }
 
-    public function replaceLocaleURL(String $locale) {
-        
+    public function replaceLocaleURL(string $locale)
+    {
+
         $parameters = Route::getCurrentRoute()->originalParameters();
         $parameters['locale'] = $locale;
         // ddd($parameters);
@@ -28,27 +33,40 @@ class Locale {
         return $newLocaleRoute;
     }
 
-    public function inURL () {
+    public function inURL()
+    {
         $segment = request()->segment(1);
         return $this->isValid($segment) ? $segment : null;
     }
 
-    public function isValid($locale) {
+    public function isValid($locale)
+    {
         return preg_match($this->langPattern, $locale) ? true : false;
     }
 
-    public function supported($locale) {
+    public function supported($locale)
+    {
         return in_array($locale, $this->langsSupported);
     }
 
     /**
-     * For Laravel Validator
-     * 
-     * 'language' rule
+     * Validator 'language-valid' rule
+     *
+     * @return bool
      */
-    public function validateLanguage($attribute, $value, $parameters, $validator)
+    public function validateValidLanguage($attribute, $value, $parameters, $validator)
     {
-        return $this->isValid($value) && $this->supported($value);
+        return $this->isValid($value);
+    }
+
+    /**
+     * Validator 'language-supported' rule
+     *
+     * @return bool
+     */
+    public function validateSupportedLanguage($attribute, $value, $parameters, $validator)
+    {
+        return $this->supported($value);
     }
 
     public function probarMock($param)

@@ -13,7 +13,8 @@ return [
     */
 
     // Custom Validation Rules
-    'language'             => 'El formato de lenguaje no es válido.',
+    'language_valid'        => 'El lenguaje no es válido.',
+    'language_supported'    => 'Disculpe, actualmente ese lenguaje no es soportado.',
 
     'accepted'             => ':attribute debe ser aceptado.',
     'active_url'           => ':attribute no es una URL válida.',
