@@ -31,11 +31,11 @@ class SetLocale
         if (Auth::check()) {
             $locale = Auth::user()->language;
             if ($locale != $uriLocale) {
-                return redirect($this->locale->replaceLocaleURL($locale));
+                return redirect($this->locale->replaceLocaleInCurrentURI($locale));
             }
         } else {
             if (!$this->locale->supported($uriLocale)) {
-                return redirect($this->locale->replaceLocaleURL(config('locale.languages.default')));
+                return redirect($this->locale->replaceLocaleInCurrentURI(config('locale.languages.default')));
             }
             $locale = $uriLocale;
         }

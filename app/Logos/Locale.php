@@ -4,6 +4,7 @@ namespace App\Logos;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Utils;
 
 // Hacer funciones estáticas
 class Locale
@@ -23,14 +24,36 @@ class Locale
         return request();
     }
 
-    public function replaceLocaleURL(string $locale)
+    public function replaceLocaleInCurrentURI(string $locale)
     {
-
         $parameters = Route::getCurrentRoute()->originalParameters();
         $parameters['locale'] = $locale;
         // ddd($parameters);
         $newLocaleRoute = url()->toRoute(request()->route(), $parameters, false);
         return $newLocaleRoute;
+    }
+
+    /**
+     * Remplaza el lenguaje en el path actual en la primera ocurrencia válida.
+     * 
+     * @param string $path
+     * @param string $language
+     * 
+     * @return mixed new path if any valid language parameter are found. 
+     *               Null otherwise.
+     */
+    public function replaceLanguageInPath(string $path, string $language): ?string
+    {
+        if (!($this->isValid($language) && $this->supported($language))) {
+            // error
+            return null;
+        }
+
+        return Utils::replaceFirstSegment(
+            $path, 
+            $language, 
+            fn ($v) => $this->isValid($v)
+        ) ?? $path;
     }
 
     public function inURL()
@@ -50,7 +73,7 @@ class Locale
     }
 
     /**
-     * Validator 'language-valid' rule
+     * Validator 'language_valid' rule
      *
      * @return bool
      */
@@ -60,7 +83,7 @@ class Locale
     }
 
     /**
-     * Validator 'language-supported' rule
+     * Validator 'language_supported' rule
      *
      * @return bool
      */

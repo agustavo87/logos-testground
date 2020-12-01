@@ -2,13 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Tests\FixturableTestCase as TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use App\Utils;
+use App\Logos\Locale;
 
 class LocaleTest extends TestCase
 {
@@ -19,6 +17,7 @@ class LocaleTest extends TestCase
     public static bool $debug = true;
 
     protected User $user;
+    protected Locale $locale;
 
     /**
      * Crea un modelo de usuario para ser usado en los tests.
@@ -50,6 +49,7 @@ class LocaleTest extends TestCase
     public function beforeEach(): void
     {
         $this->user = User::find(self::$userId);
+        $this->locale = $this->app->make('locale');
     }
 
     /**
@@ -68,18 +68,55 @@ class LocaleTest extends TestCase
                          ->putJson("/locale", [
                              'language' => self::$languageB
                          ]);
+        $this->log($response->getData());
 
         $this->assertEquals(self::$languageB, App::getLocale());
-
         $response->assertStatus(200);
+        $response->assertJsonStructure(['language', 'redirect']);
         $response->assertJson([
             'language' => self::$languageB,
         ]);
-
         $this->assertEquals(
             $this->user->language,
             self::$languageB
         );
+    }
+
+
+
+    /**
+     * Actualiza el Lenguaje del usuario mediante una solicitud HTTP Standard.
+     *
+     * @return void
+     */
+    public function testRedirectsOnLanguajeUpdate(): void
+    {
+        $otherLanguage = $this->user->language == self::$languageA
+                         ? self::$languageB
+                         : self::$languageA;
+        
+        $response = $this->actingAs($this->user)
+                    ->get('/');
+        $response->assertRedirect();
+        $newLocation = $response->headers->all()['location'][0];
+        $this->ok($newLocation);
+
+        $response = $this->actingAs($this->user)
+                         ->get($newLocation);
+
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($this->user)
+                         ->put("/locale", [
+                             'language' => $otherLanguage
+                         ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('language');
+        $newLocation = $response->headers->all()['location'][0];
+
+        $this->ok($newLocation);
+        $this->ok('ok');
     }
 
     /**
@@ -162,11 +199,11 @@ class LocaleTest extends TestCase
     }
 
     /**
-     * Reemplaza el lenguaje en la URI.
+     * Reemplaza el lenguaje en la URI Actual.
      *
      * @return void
      */
-    public function testRemplazaLenguajeEnUri(): void
+    public function testRemplazaLenguajeEnUriActual(): void
     {
         $originalLanguage = 'es';
         $replaceLanguage = 'en';
@@ -175,15 +212,32 @@ class LocaleTest extends TestCase
         $response = $this->get($originalRoute);
 
         $locale = $this->app->make('locale');
-        $newRoute = $locale->replaceLocaleURL($replaceLanguage);
+        $newRoute = $locale->replaceLocaleInCurrentURI($replaceLanguage);
         $this->log($newRoute);
         $this->assertNotEquals($originalRoute, $newRoute);
 
-        $segments = explode('/', $newRoute);
-        $segments = array_values(array_filter($segments, function ($value) {
-            return $value !== '';
-        }));
-        $lenguajeEnNuevaRuta = $segments[0];
+        $lenguajeEnNuevaRuta = Utils::segments($newRoute)[0];
         $this->assertEquals($replaceLanguage, $lenguajeEnNuevaRuta);
+    }
+
+    /**
+     * Reemplaza el lenguaje en la Path que se le pasa
+     *
+     * @return void
+     */
+    public function testRemplazaLenguajeEnPath(): void
+    {
+        $path = route('home', 'es', false);
+        $language = 'en';
+        $newPath = $this->locale->replaceLanguageInPath($path, $language);
+        $this->log($path);
+        $this->log($newPath);
+        $this->assertEquals($newPath, route('home', $language, false));
+
+        $path = '/';
+        $newPath = $this->locale->replaceLanguageInPath($path, $language);
+        $this->log($path);
+        $this->log($newPath);
+        $this->assertEquals($path, $newPath);
     }
 }

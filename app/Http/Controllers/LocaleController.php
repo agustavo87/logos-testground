@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 use App\Logos\Locale;
+use App\Utils;
 
 class LocaleController extends Controller
 {
@@ -30,12 +31,19 @@ class LocaleController extends Controller
 
         App::setLocale($data['language']);
 
+        $previous = url()->previous();
+        $previous = Utils::path($previous);
+        $previous = $this->locale->replaceLanguageInPath($previous, $data['language']);
+        $previous = url($previous);
+
+
         if ($request->isJson()) {
             return response()->json([
-                'language' => $user->language
+                'language' => $user->language,
+                'redirect' => $previous
             ]);
         }
 
-        return back()->with('language', $user->language);
+        return redirect($previous)->with('language', $user->language);
     }
 }
