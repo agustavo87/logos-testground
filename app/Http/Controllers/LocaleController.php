@@ -27,6 +27,8 @@ class LocaleController extends Controller
             $user = Auth::user();
             $user->language = $data['language'];
             $user->save();
+        } else {
+            $request->session()->put('language', $data['language']);
         }
 
         App::setLocale($data['language']);
@@ -39,7 +41,7 @@ class LocaleController extends Controller
 
         if ($request->isJson()) {
             return response()->json([
-                'language' => $user->language,
+                'language' => $data['language'],
                 'redirect' => $previous
             ]);
         }

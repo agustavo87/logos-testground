@@ -46,9 +46,8 @@ Route::group([
     })->name('home');
 
 
-    Route::get('login', function () {
-        return Inertia::render('User/Login');
-    })->name('auth.login.show');
+    Route::get('login', [AuthController::class, 'show'])
+        ->name('auth.show');
 
     Route::post('login', [AuthController::class, 'authenticate'])
         ->name('auth.login');
@@ -86,4 +85,4 @@ Route::group([
         ]);
     });
 
-    Route::put('/locale', [LocaleController::class, 'update']);
+    Route::put('/locale', [LocaleController::class, 'update'])->name('locale');

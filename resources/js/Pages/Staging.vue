@@ -1,15 +1,24 @@
 <template>
-<div class="bg-gray-300 absolute top-0 bottom-0 left-0 right-0 h-full w-full">
-  <h1 class=" text-2xl">Creando</h1>  
+<div>
+  <a href="#">Hola</a>
 </div>
-
 </template>
 
-<script>
+<style scoped>
+a {
+  background-color: red;
+  color:blue
+}
+a:focus {
+  background: lightcoral;
+}
+</style>
+
 
   export default {
     props: ['request'],
-    components: {},
+    components: {
+    },
     metaInfo() {
         title: 'Staging!'
     }

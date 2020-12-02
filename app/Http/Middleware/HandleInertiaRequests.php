@@ -56,7 +56,11 @@ class HandleInertiaRequests extends Middleware
                 } else {
                     return (object) [];
                 }
-            }
+            },
+            'flash' => [
+                'auth-error' => fn () => $request->session()->get('auth-error')
+            ],
+            'languagesNames' => fn () => config('locale.languages.names')
         ]);
     }
 }

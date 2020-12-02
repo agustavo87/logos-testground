@@ -21,7 +21,11 @@
         :current="route().current('logos.show')"
       > Logos 
       </nav-item>
-      <dropdown d-title="idioma" caption-class="text-white font-medium py-1 px-2 rounded mt-1 sm:mt-0 w-full sm:ml-2 cursor-pointer opacity-75 hover:bg-gray-800 hover:opacity-100 active:opacity-100 active:bg-gray-700">
+      <dropdown 
+        d-title="idioma" 
+        caption-class="text-white font-medium py-1 px-2 rounded mt-1 sm:mt-0 w-full sm:ml-2 cursor-pointer opacity-75 hover:bg-gray-800 hover:opacity-100 active:opacity-100 active:bg-gray-700"
+        :open="languageDropdowIsOpen"
+      >
         <template v-slot:caption >
           <div class="text-white py-1" >
             <svg class="fill-current  h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -29,8 +33,17 @@
             </svg>
           </div>
         </template>
-        <dropdown-item v-for="locale in $locales()" :key="locale" :current="locale === $locale()" href="#">
-          {{locale.toUpperCase()}}
+        <dropdown-item 
+          v-for="locale in $locales()" 
+          :key="locale" 
+          :current="locale === $locale()" 
+          :href="route('locale')"
+          :data="{language: locale}"
+          @selected="changeLocale(locale)"
+          a-button
+          type='button'
+        >
+          {{languagesNames[locale]}}
         </dropdown-item>
       </dropdown>
 
@@ -47,6 +60,7 @@ import AreteHeader from "../Components/Header";
 import NavItem from "../Components/NavItem";
 import Dropdown from "../Components/Dropdown";
 import DropdownItem from "../Components/DropdownItem";
+import axios from "axios";
 
 export default {
   components: {
@@ -55,5 +69,44 @@ export default {
     Dropdown,
     DropdownItem
   },
+  data() {
+    return {
+      languageDropdowIsOpen: false,
+      languagesNames: this.$page.props.languagesNames
+    }
+  },
+  methods: {
+    changeLocale(language) {
+      console.log('cambiando locale:', language)
+      axios.put('/locale', {
+        language: language
+      })
+        .then(function (response) {
+          this.languageDropdowIsOpen = false;
+          console.log(response);
+          let newdir = response.data.redirect;
+          console.log('redirecting to:', newdir);
+          location.replace(newdir);
+        }.bind(this))
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+    }
+  }
 };
 </script>

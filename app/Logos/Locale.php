@@ -91,9 +91,4 @@ class Locale
     {
         return $this->supported($value);
     }
-
-    public function probarMock($param)
-    {
-        return $param;
-    }
 }

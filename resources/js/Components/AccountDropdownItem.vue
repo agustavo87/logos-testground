@@ -4,7 +4,7 @@
     :class="classes"
     :current="current"
     v-bind="$attrs"
-    @selection="$emit('selection')"
+    @selected="$emit('selected')"
     >
         <slot></slot>
     </din-anchor>

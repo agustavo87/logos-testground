@@ -76,12 +76,45 @@ class LocaleTest extends TestCase
         $response->assertJson([
             'language' => self::$languageB,
         ]);
+        // $response->assertSessionHas('language', self::$languageB);
+
         $this->assertEquals(
             $this->user->language,
             self::$languageB
         );
     }
 
+    /**
+     * Actualiza el Lenguaje del usuario mediante una solicitud JSON.
+     *
+     * @return void
+     */
+    public function testUpdatesGuestLanguageByJson(): void
+    {
+        $otherLanguage = !session()->has('language')
+                            ? self::$languageA
+                            : (session('language') === self::$languageA
+                                ? self::$languageB
+                                : self::$languageA
+                            );
+
+        
+        $response = $this->putJson("/locale", [
+            'language' => $otherLanguage
+        ]);
+
+        $this->log($response->getData());
+
+        $this->assertEquals($otherLanguage, App::getLocale());
+        $response->assertStatus(200);
+        $response->assertJsonStructure(['language', 'redirect']);
+        $response->assertJson([
+            'language' => $otherLanguage,
+        ]);
+
+        $response->assertSessionHas('language', $otherLanguage);
+
+    }
 
 
     /**
@@ -172,13 +205,30 @@ class LocaleTest extends TestCase
      *
      * @return void
      */
-    public function testRedirectsToSettedLanguageUri(): void
+    public function testRedirectsToUserLanguage(): void
     {
         $language = $this->user->language;
 
         $response = $this->actingAs($this->user)
                          ->get('/');
 
+        $response->assertRedirect();
+        $response->assertLocation('/' . $language);
+    }
+
+    /**
+     * El invitado es redireccionado de acuerdo al lenguaje configurado en su
+     * sesión.
+     *
+     * @return void
+     */
+    public function testRedirectsToSessionLanguage(): void
+    {
+        $language = self::$languageA;
+
+        $response = $this->withSession(['language' => $language])
+                            ->get('/');
+        
         $response->assertRedirect();
         $response->assertLocation('/' . $language);
     }

@@ -55,7 +55,7 @@
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="flex justify-center">
                 <a href="{{ route('home') }}" class="links">Inicio</a>
-                <a href="{{ route('auth.login.show') }}" class="links">Iniciar Sesión</a>
+                <a href="{{ route('auth.show') }}" class="links">Iniciar Sesión</a>
                 <a href="{{ route('user.register.show') }}" class="links">Registrarse</a>
                 </div>
                 </div>

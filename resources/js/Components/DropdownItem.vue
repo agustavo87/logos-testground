@@ -1,9 +1,10 @@
 <template>
 <din-anchor 
     :current="current" 
-    class="block px-4 py-2 text-gray-200 sm:text-gray-800" 
-    @selection="$emit('selection')"
+    class="block px-4 py-2 text-gray-200 sm:text-gray-800 focus:outline-none w-full text-left" 
+    @selected="$emit('selected')"
     :class="classes"
+    v-bind="$attrs"
 >
     <slot />
 </din-anchor>
@@ -27,6 +28,5 @@ export default {
                 : 'hover:bg-gray-700 sm:hover:bg-indigo-500 hover:text-white'
         }
     }
-    
 }
 </script>

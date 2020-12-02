@@ -1,8 +1,11 @@
 <template>
   <arete-container>
     <arete-header-1>INICIAR SESIÓN:</arete-header-1>
+    <div v-if="$page.props.flash['auth-error']" class=" bg-red-200 p-4 text-center max-w-md mx-auto rounded">
+        {{ $page.props.flash['auth-error'] }}
+    </div>
     <form @submit.prevent="submit"
-    class="mx-auto max-w-sm rounded-lg p-4 flex flex-col justify-start shadow-lg"
+    class="mx-auto max-w-md rounded-lg p-4 flex flex-col justify-start shadow-lg"
     >
 
     <arete-label for="email">E-mail</arete-label>
@@ -55,8 +58,7 @@
     },
     methods: {
       submit() {
-        this.$inertia.post('/es/login', this.form)
-        // axios.post('/es/login', this.form);
+        this.$inertia.post(route('auth.show'), this.form)
       }
     }
   }

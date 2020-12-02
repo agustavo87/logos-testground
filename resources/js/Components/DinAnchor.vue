@@ -2,7 +2,7 @@
 <component 
   :is="componentName" 
   v-bind="$attrs"
-  @click="$emit('selection')"
+  @click="current ? null : $emit('selected')"
 >
   <slot></slot>
 </component>
@@ -13,7 +13,8 @@ export default {
     inheritAttrs: false,
     props: {
         current: Boolean,
-        inertia: Boolean
+        inertia: Boolean,
+        aButton: Boolean
     },
     methods: {
       log() {
@@ -22,9 +23,13 @@ export default {
     },
     computed: {
         componentName() {
-            return this.current ? 'span' : this.inertia
-                    ? 'inertia-link'
-                    : 'a'
+            return this.current 
+                    ? 'span' 
+                    : this.inertia
+                      ? 'inertia-link'
+                      : this.aButton
+                        ? 'button'
+                        : 'a'
         }
     }
     

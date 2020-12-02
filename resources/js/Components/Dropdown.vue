@@ -23,26 +23,34 @@
       v-if="isOpen"
       @click="isOpen = false"
       tabindex="-1"
-      class="fixed inset-0 left-0 h-full w-full cursor-default"
+      class="fixed inset-0 h-full w-full cursor-default"
     ></button>
 
     <!-- Dropdown -->
     <div
       v-if="isOpen"
-      class="sm:absolute relative right-0 mt-2 py-2 w-full bg-gray-800 sm:bg-white rounded-lg sm:shadow-xl"
-      @click="isOpen = false"
+      class="relative sm:absolute flex-col mt-2 py-2 bg-gray-800 sm:bg-white rounded-lg sm:shadow-xl"
+      :class="dropdownClass"
     >
+     <!-- class="" -->
+
       <slot />
+
     </div>
   </div>
 </template>
 <script>
 export default {
   inheritAttrs: false,
-  props: ["captionClass", "dTitle"],
+  props: {
+    captionClass: String, 
+    dropdownClass: String,
+    dTitle: String,
+    open: Boolean
+  },
   data() {
     return {
-      isOpen: false,
+      isOpen: this.open,
     };
   },
   computed: {
@@ -63,5 +71,13 @@ export default {
       document.removeEventListener("keydown", handleEscape);
     });
   },
+  watch: {
+    open: {
+      handler: function (val) {
+        this.isOpen = val;
+      },
+      inmediate:true
+    }
+  }
 };
 </script>

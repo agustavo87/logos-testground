@@ -1,9 +1,12 @@
 <template>
 <header class="bg-gray-900 sm:flex sm:justify-between sm:px-4 sm:py-3 sm:items-center">
   <div class="flex justify-between items-center px-4 py-3 sm:p-0">
+    <!-- Logo -->
     <div>
       <img class="h-8" src="../../img/logo-cuadrado.png" alt="Martón Dj">
     </div>
+
+    <!-- xs Menú Button -->
     <div class="sm:hidden">
       <button @click="isOpen = !isOpen"  class="block h-6 w-6 text-white opacity-75 hover:opacity-100 focus:opacity-100 focus:outline-none">
         <svg v-if="!isOpen" class="h-6 w-6 fill-current" x-description="Heroicon name: menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -14,28 +17,37 @@
         </svg>
       </button> 
     </div>
-    </div>
+
+  </div>
+
+    <!-- Navbar -->
     <nav :class="isOpen ? 'block' : 'hidden'" class="sm:block">
-      <!-- Navbar sm+ -->
+      
       <div  class="text-sm px-2 pt-2 pb-4 sm:flex sm:p-0">
+
+        <!-- Items -->
         <slot></slot>
-        
-        <!-- ícono idioma -->
 
-
+        <!--Dropdown de cuenta de usuario: sm+ -->
         <account-dropdown class="hidden sm:block sm:ml-6" :user="user" :currentPage="route().current()"></account-dropdown>
+      
       </div>
-      <!-- account dropdown mobile -->
+
+      <!-- account dropdown xs -->
       <div class="px-4 py-5 border-t border-gray-800 sm:hidden">
-        <div class="flex items-center" v-if="user">
+
+        <!-- Imagen de perfil -->
+        <div class="flex items-center">
           <img src="../../img/panther-profile.png" alt="Gustavo" class="h-8 w-8 rounded-full border-2 border-gray-600  object-cover">
-          <span class="ml-3 text-white font-semibold">{{ user.name }}</span>
+          <span class="ml-3 text-white font-semibold">{{ user ? user.name : 'Invitado'}}</span>
         </div>
+
+        <!-- Items -->
         <div class="mt-4 text-sm">
           <account-mobile-item 
             inertia
-            :href="route('auth.login.show')"
-            :current="route().current('auth.login.show')" 
+            :href="route('auth.show')"
+            :current="route().current('auth.show')" 
             v-if="!user"
             first 
           >
@@ -73,8 +85,11 @@
             Salir
           </account-mobile-item>
         </div>
+
       </div>
+
     </nav>
+
 </header>
 </template>
 
@@ -98,16 +113,7 @@ import AccountMobileItem from './AccountMobileItem'
       return {
         isOpen: true
       }
-    },
-
-  //   mounted() {
-  //   this.$once(
-  //     'hook:destroyed',
-  //     Inertia.on('navigate', (event) => {
-  //       console.log(`Navigated to ${event.detail.page.url}`)
-  //     })
-  //   )
-  // },
+    }
   }
 
 </script>

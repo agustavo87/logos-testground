@@ -18,7 +18,8 @@ class SetLocale
     }
 
     /**
-     * Handle an incoming request.
+     * Remplaza el lenguaje de la URI por otros criterios de mayor prioridad,
+     * si existen.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -27,17 +28,22 @@ class SetLocale
     public function handle(Request $request, Closure $next)
     {
         $uriLocale = $this->locale->inURL();
+        $locale = $uriLocale;
 
         if (Auth::check()) {
             $locale = Auth::user()->language;
             if ($locale != $uriLocale) {
                 return redirect($this->locale->replaceLocaleInCurrentURI($locale));
             }
+        } elseif ($request->session()->has('language')) {
+            $locale = $request->session()->get('language');
+            if ( $locale != $uriLocale) {
+                return redirect($this->locale->replaceLocaleInCurrentURI($locale));
+            }
         } else {
             if (!$this->locale->supported($uriLocale)) {
                 return redirect($this->locale->replaceLocaleInCurrentURI(config('locale.languages.default')));
             }
-            $locale = $uriLocale;
         }
 
         app()->setLocale($locale);
