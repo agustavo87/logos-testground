@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
+require('./resources/js/Logos/quill.mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,6 +15,7 @@ const path = require('path');
 
 mix.js('resources/js/app.js', 'public/js')
     // .styles('resources/css/app.css', 'public/css/app.css')
+    .editor(__dirname)
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
