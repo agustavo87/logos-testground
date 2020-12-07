@@ -7,7 +7,7 @@ function isElement(element) {
 
 /**
  * Try to decode JSON, and return if this is possible. If not, 
- * returns the error (wthout throuit)
+ * returns the error (without throwing it)
  * @param {*} data to get json
  * @returns {object|Error} datos js evaluados o Error si no es parseable by JSON.
  */
@@ -25,13 +25,12 @@ function getJSON (data) {
  * @property {string|Array|object|null} get the json value parsed if ok, 
  * null otherwise.
  * @property {boolean} errored
- * @property {SyntaxError} error - your age.
+ * @property {SyntaxError} error
  */
 
 /**
- * Try to parse a JSON string. Returns an object with
- * 'get' property with parsed value if ok, null otherwise.
- * 'errored' true, if error, and 'error' with the error object.
+ * Try to parse a JSON string. Returns an 
+ * improvedJSON to mannage the result.
  * @param {string} json the JSON string to parse
  * @returns {improvedJSON}
  */
