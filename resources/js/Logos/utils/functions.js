@@ -122,7 +122,7 @@ const getDelta = {
      * @returns {object|Array|boolean}  delta if valid, false otherwise
      */
     fromJSON: function (JSON) {
-        return this.fromData(getJSON(JSON))
+        return this.fromData(iJSON(JSON).get)
     },
 
     /**
@@ -133,9 +133,9 @@ const getDelta = {
      * @returns {object|Array|boolean} delta si es válido, false de otro modo.
      */
     fromRaw: function (rawData) {
-        let json = null;
-        if (!_.isError( json = getJSON(rawData)) ) {
-            return this.fromData(json)
+        let ijson = iJSON(rawData);
+        if (!ijson.errored) {
+            return this.fromData(ijson.get)
         } else {
             return this.fromData(rawData);
         }
@@ -208,6 +208,6 @@ function cargarPost(post, vm) {
 
 export {
     isElement, jump,
-    cargarPost, getDelta, getJSON, logAjaxError,
+    cargarPost, getDelta, getJSON, iJSON, logAjaxError,
     queryProxy, queryProxyAll
 }
