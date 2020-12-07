@@ -1,4 +1,4 @@
-import { iJSON } from "./../Logos/utils/functions";
+import { iJSON } from "../utils/functions";
 
 let okJSON = '{"prop1":"value", "prop2":34}';
 let wrongJSON = '{"prop1:"value", "prop2":34}';
