@@ -33,8 +33,8 @@ Quill.register({
     'formats/video': Video,
 });
 
-// Blot(s) específico del editor
-Quill.register(SourceBlot);
+// Blot específico del editor
+// Quill.register(SourceBlot);
 
 //Extensiones (de ejemplo).
 // require('./extensions/bold')(Quill);
