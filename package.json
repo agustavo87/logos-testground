@@ -16,7 +16,7 @@
         "@inertiajs/inertia": "^0.6.1",
         "@inertiajs/inertia-vue": "^0.4.1",
         "@inertiajs/progress": "^0.2.2",
-        "autoprefixer": "^10.0.2",
+        "autoprefixer": "^10.1.0",
         "axios": "^0.19",
         "babel-jest": "^26.5.2",
         "browser-sync": "^2.26.13",

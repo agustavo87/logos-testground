@@ -1,16 +1,22 @@
 <template>
-    <div id="quill-container" ref="quill">
+<div :class="focused ? activeClass : ''">
+    <div 
+        ref="quill"
+      >
         <slot />
     </div>
+</div>
 </template>
 
 <script>
 import Quill from "../quill";
 import { getDelta } from "../utils/functions";
 
-let quill = null;
+// let quill = null;
+
 
 export default {
+    quill: null,
     name: "Quill",
     props: {
         options: {
@@ -25,20 +31,27 @@ export default {
                 }
             }
         },
-        value: null,    
+        value: {
+            type: Object,
+            default: null
+        },
+        activeClass: {
+            type: String,
+            default: ''
+        }
     },
-
-    // data () {
-    //     return {
-    //         quill:null
-    //     }
-    // },
+    data () {
+        return {
+            focused:false,
+        }
+    },
 
     /** @fires Quill#created */
     mounted () {
-        if (quill === null) {
-            quill = new Quill(this.$refs.quill, this.options);
 
+        if (this.$options.quill === null) {
+            this.$options.quill = new Quill(this.$refs.quill, this.options);
+            
             /**
              * Quill is created.
              * Can be used to have acces to the quill instance.
@@ -49,7 +62,7 @@ export default {
              * @property {external:HTMLElement} container - the quill container node.
              */
             this.$emit('created', {
-                target: quill,
+                target: this.$options.quill,
                 container: this.$refs.quill,
                 contents: this.getContents()
             });
@@ -68,12 +81,23 @@ export default {
              * @property {Quill} target - the quill instance.
              * @property {external:HTMLElement} container - the quill container node.
              */
-            quill.on('text-change', function (delta, oldDelta, source) {
+            this.$options.quill.on('text-change', function (delta, oldDelta, source) {
                 // 
                 if (source !== 'value-watch') {
                     this.$emit('input', this.getContents(delta, oldDelta, source));
                 }
             }.bind(this));
+
+            this.$options.quill.scroll.domNode.addEventListener('focus', (event) => {
+                this.focused = true;
+                this.$emit('q-focus');
+            });
+
+            this.$options.quill.scroll.domNode.addEventListener('blur', (event) => {
+                this.focused = false;
+                this.$emit('q-blur');
+            });
+            
         }
     },
     methods: {
@@ -87,8 +111,8 @@ export default {
          */
         getContents(delta = null, oldDelta = null, source = null) {
             return {
-                delta: quill.getContents(),
-                html: quill.scroll.domNode.innerHTML,
+                delta: this.$options.quill.getContents(),
+                html: this.$options.quill.scroll.domNode.innerHTML,
                 change: {
                     delta, 
                     oldDelta,
@@ -100,7 +124,7 @@ export default {
     },
     watch: {
         /** 
-         * Used to set new contents 
+         * Updates quill contents
          * 
          * @param {object} contents Has to have a 'delta' property with a valid 
          * delta and is provided by the parent setter.
@@ -111,7 +135,7 @@ export default {
             console.log('Quill-delta: new: %o, old: %o', contents.delta, oldContents.delta);
             let data = getDelta.fromRaw(contents.delta);
             if(data) {
-                quill.setContents(data, 'value-watch');
+                this.$options.quill.setContents(data, 'value-watch');
             } else {
                 console.warn('Quill: invalid delta %o', contents.delta);
                 /** @todo mutate the original binded variable vía an 'input' event. */

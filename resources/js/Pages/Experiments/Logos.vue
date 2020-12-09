@@ -1,6 +1,9 @@
 <template>
-<div class="logos-container">
-<logos />
+<div class=" h-screen pt-10 px-7 bg-gray-100">
+<logos 
+    class=" h-1/2 border max-w-lg mx-auto bg-white border-gray-200" 
+    :active-class="'border-blue-200'"
+/>
 </div>
 </template>
 
@@ -9,36 +12,8 @@ import Logos from '../../Logos/Components/Logos'
 
 export default {
     components: {
-        Logos
+        Logos,
     }
 }
+
 </script>
-
-<style>
-/* 
-.main-container {
-    height: 100vh;
-}
-
-.quill-section {
-    height: 33%;
-    box-sizing: border-box;
-}
-
-.quill-title {
-    height: 3rem;
-    box-sizing: border-box;
-    padding: 0.5rem 0.5rem;
-}
-*/
-.logos-container {
-    height: 300px;
-    box-sizing: border-box;
-    background-color: white;
-}
-/*
-.ql-editor {
-    padding: 1rem 0.5rem;
-} */
-
-</style>
