@@ -7,12 +7,6 @@
 <template>
 <div>
     <div ref="toolbar">
-        <select class="ql-header">
-            <!-- Note a missing, thus falsy value, is used to reset to default -->
-            <option selected></option>
-            <option value="2">Encabezado 1</option>
-            <option value="3">Encabezado 2</option>
-        </select>
         <!-- Add a bold button -->
         <button class="ql-bold"></button>
         <button class="ql-italic"></button>
@@ -23,7 +17,7 @@
         <!-- <button class="ql-script" value="sub"></button>
         <button class="ql-script" value="super"></button>   -->
     </div>
-    <div :class="focused ? activeClass : ''">
+    <div :class="computedClasses" v-bind="$attrs">
         <div 
             ref="quill"
         >
@@ -43,8 +37,9 @@ var toolbarOptions = [
     ];
 
 export default {
-    quill: null,
     name: "Quill",
+    quill: null,
+    inheritAttrs: false,
     props: {
         options: {
             type: Object, 
@@ -67,11 +62,23 @@ export default {
         activeClass: {
             type: String,
             default: ''
+        },
+        editorClass: {
+            type: Array,
+            default: []
         }
     },
     data () {
         return {
             focused:false,
+        }
+    },
+    computed: {
+        computedClasses () {
+            return [
+                this.focused ? this.activeClass : '',
+                ...this.editorClass
+            ]
         }
     },
 
@@ -187,7 +194,25 @@ export default {
 
 
 .ql-container {
-    font-family: 'Times New Roman', Times, serif;
+    @apply font-sans
+}
+
+.ql-container h2, .ql-container h3 {
+    @apply font-semibold text-gray-700;
+}
+.ql-container h2 {
+    @apply mt-5 mb-1 ;
+
+}
+
+.ql-container h3 {
+    @apply mt-3 mb-1;
+
+}
+
+.ql-container p {
+    @apply mb-2 ;
+
 }
 
 </style>

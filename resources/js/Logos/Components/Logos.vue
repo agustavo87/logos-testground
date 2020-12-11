@@ -4,6 +4,7 @@
         @q-focus="$emit('l-focus')" 
         @q-blur="$emit('l-blur')"
         :active-class="activeClass"
+        :editor-class="editorClass"
     >
         <slot />
     </quill>
@@ -18,6 +19,6 @@ export default {
     components: {
         Quill
     },
-    props: ['activeClass']
+    props: ['activeClass', 'editorClass']
 }
 </script>
