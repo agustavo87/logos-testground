@@ -1,3 +1,11 @@
+/** 
+* Instancia de Quill
+* 
+* Tiene los formatos/blots y módulos por defecto de la compilación local pero 
+* no especifica ninguna configuración más que un pequeño placeholder. 
+* Incorpora sólo los estilos nucleares (core) de Quill.
+*/
+
 <template>
 <div :class="focused ? activeClass : ''">
     <div 
@@ -9,7 +17,7 @@
 </template>
 
 <script>
-import Quill from "../quill";
+import Quill from "../quill/quill";
 import { getDelta } from "../utils/functions";
 
 // let quill = null;
@@ -23,11 +31,11 @@ export default {
             type: Object, 
             default: () => {
                 return  {
-                    theme: 'bubble',
+                    // theme: 'bubble',
                     placeholder: 'Escribe algo épico',
-                    modules: {
-                        toolbar: ['bold', 'italic', 'underline']
-                    }
+                    // modules: {
+                    //     toolbar: ['bold', 'italic', 'underline']
+                    // }
                 }
             }
         },
@@ -139,7 +147,7 @@ export default {
             } else {
                 console.warn('Quill: invalid delta %o', contents.delta);
                 /** @todo mutate the original binded variable vía an 'input' event. */
-                /** @todo emit some kind of error notification. */
+                /** @todo emit some kind of error notification.. */
             }
         }
     }
@@ -147,6 +155,7 @@ export default {
 </script>
 
 <style>
-@import '../css/quill.css';
+@import 'quill/dist/quill.core.css';
+/* @import 'quill/dist/quill.bubble.css'; */
 
 </style>

@@ -12,7 +12,7 @@
 
 <script>
 
-import Quill from "./Quill";
+import Quill from "./LogosQuill";
 
 export default {
     components: {

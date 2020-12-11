@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
-require('./resources/js/Logos/quill.mix');
+require('./resources/js/Logos/quill/quill.mix');
 
 /*
  |--------------------------------------------------------------------------
