@@ -1,7 +1,8 @@
 /** 
-* Instancia de Quill estilizada para Logos.
+* Instancia de Quill preparada para Logos.
 * 
-* Quill + core + theme + overrides específicos de logos.
+* - Quill + core + theme + overrides CSS específicos de logos.
+* - Manejo de módulos de fuentes.
 */
 
 <template>
@@ -13,9 +14,6 @@
         <button class="ql-underline"></button>
         <button class="ql-header" value='2'></button>
         <button class="ql-header" value='3'></button>
-        <!-- Add subscript and superscript buttons -->
-        <!-- <button class="ql-script" value="sub"></button>
-        <button class="ql-script" value="super"></button>   -->
     </div>
     <div :class="computedClasses" v-bind="$attrs">
         <div 
@@ -28,10 +26,11 @@
 </template>
 
 <script>
+
 import Quill from "../quill/quill";
 import { getDelta } from "../utils/functions";
 
-var toolbarOptions = [
+let toolbarOptions = [
     ['bold', 'italic'], 
      [{ 'header': [2, 3, false] }],
     ];
@@ -39,7 +38,9 @@ var toolbarOptions = [
 export default {
     name: "Quill",
     quill: null,
+    sources: new Map(),
     inheritAttrs: false,
+    inject: ['SourceProviders'],
     props: {
         options: {
             type: Object, 
@@ -47,11 +48,6 @@ export default {
                 return  {
                     theme: 'bubble',
                     placeholder: 'Escribe algo épico',
-                    // modules: {
-                    //     toolbar: {
-                    //         container: this.$refs.toolbar
-                    //     }
-                    // }
                 }
             }
         },
@@ -82,16 +78,40 @@ export default {
         }
     },
 
+    beforeCreate () {
+        // if (Object.keys(Quill.imports).indexOf('modules/' + CitationsSource.name ) < 0) {
+        //     Quill.register('modules/' + CitationsSource.name, CitationsSource.module);
+        //     // console.log('Modulo: ' + CitationsSource.name + ' registrado', Quill.import('modules/citation'));
+        // } else {
+        //     // console.log('Modulo: ' + CitationsSource.name + ' ya se encuentra registrado')
+        // }
+    },
+
     /** @fires Quill#created */
     mounted () {
-
         if (this.$options.quill === null) {
             this.options['modules'] = {
-                        toolbar: {
-                            container: this.$refs.toolbar
-                        }
-                    };
+                toolbar: {
+                    container: this.$refs.toolbar
+                }
+            };
+
+            console.log(this.SourceProviders);
+
+            /*
+            this.options['modules'][CitationsSource.name] = CitationsSource.options
+
+
+            this.$options.sources.set(CitationsSource.name, this.$options.quill.getModule(CitationsSource.name))
+            */
             this.$options.quill = new Quill(this.$refs.quill, this.options);
+            
+            /*
+            // console.log(this.$options.sources.get(CitationsSource.name));
+            this.$emit('new-source-type', {
+                name: CitationsSource.name,
+                module: this.$options.sources.get(CitationsSource.name)
+            })
             
             /**
              * Quill is created.
@@ -190,7 +210,6 @@ export default {
 <style>
 @import 'quill/dist/quill.core.css';
 @import 'quill/dist/quill.bubble.css';
-/* @import 'quill/dist/quill.snow.css'; */
 
 
 .ql-container {
@@ -214,5 +233,5 @@ export default {
     @apply mb-2 ;
 
 }
-
 </style>
+

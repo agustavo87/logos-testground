@@ -5,6 +5,7 @@
         @q-blur="$emit('l-blur')"
         :active-class="activeClass"
         :editor-class="editorClass"
+        @new-source-type="$emit('new-source-type', $event)"
     >
         <slot />
     </quill>
