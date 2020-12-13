@@ -36,7 +36,7 @@ let toolbarOptions = [
     ];
 
 export default {
-    name: "Quill",
+    name: "Logos",
     quill: null,
     sources: new Map(),
     inheritAttrs: false,
@@ -48,6 +48,7 @@ export default {
                 return  {
                     theme: 'bubble',
                     placeholder: 'Escribe algo épico',
+                    modules: {}
                 }
             }
         },
@@ -78,33 +79,21 @@ export default {
         }
     },
 
-    beforeCreate () {
-        // if (Object.keys(Quill.imports).indexOf('modules/' + CitationsSource.name ) < 0) {
-        //     Quill.register('modules/' + CitationsSource.name, CitationsSource.module);
-        //     // console.log('Modulo: ' + CitationsSource.name + ' registrado', Quill.import('modules/citation'));
-        // } else {
-        //     // console.log('Modulo: ' + CitationsSource.name + ' ya se encuentra registrado')
-        // }
+    created () {
+        this.registerSourceControllers();
     },
 
     /** @fires Quill#created */
     mounted () {
         if (this.$options.quill === null) {
-            this.options['modules'] = {
-                toolbar: {
-                    container: this.$refs.toolbar
-                }
+            this.options['modules']['toolbar'] = {
+                container: this.$refs.toolbar
             };
 
-            console.log(this.SourceProviders);
-
-            /*
-            this.options['modules'][CitationsSource.name] = CitationsSource.options
-
-
-            this.$options.sources.set(CitationsSource.name, this.$options.quill.getModule(CitationsSource.name))
-            */
             this.$options.quill = new Quill(this.$refs.quill, this.options);
+            this.shareSourceControllers();
+            // this.$options.sources.set(CitationsSource.name, this.$options.quill.getModule(CitationsSource.name))
+            // window.quill = this.$options.quill;
             
             /*
             // console.log(this.$options.sources.get(CitationsSource.name));
@@ -181,6 +170,30 @@ export default {
                     date: new Date()
                 }
             }
+        },
+        registerSourceControllers () {
+            this.SourceProviders.forEach(sp => {
+                if (Object.keys(Quill.imports).indexOf('modules/' + sp.name ) < 0) {
+                    Quill.register('modules/' + sp.name, sp.module);
+                    console.log('Modulo: ' + sp.name + ' registrado', Quill.import('modules/' + sp.name));
+                } else {
+                    console.log('Modulo: ' + sp.name + ' ya se encuentra registrado')
+                }
+                this.options['modules'][sp.name] = sp.options;
+                console.log('-->options.modules.'+sp.name+': ', this.options['modules'][sp.name]  )
+                // this.$options.sources.set(sp.name, this.$options.quill.getModule(sp.name))
+            });
+        },
+        shareSourceControllers () {
+            let SourceController = {};
+            this.SourceProviders.forEach(sp => {
+                if (SourceController = this.$options.quill.getModule(sp.name)) {
+                    this.$emit('new-source-controller', {
+                        name: sp.name,
+                        module: SourceController
+                    });
+                }
+            });
         }
     },
     watch: {

@@ -4,7 +4,7 @@
         :editor-class="['h-1/2', 'border', 'max-w-lg', 'mx-auto', 'bg-white', 'border-gray-200']" 
         :active-class="'border-blue-200'"
         class=" h-full "
-        @new-source-type="onNewSourceType"
+        @new-source-controller="onNewSourceController"
     />
 </div>
 </template>
@@ -31,6 +31,7 @@ const CitationsSource = {
             }
     }
 };
+window.SourceProviders = [CitationsSource];
 
 
 export default {
@@ -46,10 +47,10 @@ export default {
         Logos
     },
     methods: {
-        onNewSourceType (data) {
-            this.$options.sources.set(data.name, data.module);
+        onNewSourceController (SourceController) {
+            this.$options.sources.set(SourceController.name, SourceController.module);
             console.log('new source type:');
-            console.log(this.$options.sources.get(data.name));
+            console.log(this.$options.sources.get(SourceController.name));
         }
     }
 
