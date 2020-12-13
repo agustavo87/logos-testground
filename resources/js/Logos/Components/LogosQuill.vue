@@ -38,7 +38,6 @@ let toolbarOptions = [
 export default {
     name: "Logos",
     quill: null,
-    sources: new Map(),
     inheritAttrs: false,
     inject: ['SourceProviders'],
     props: {
@@ -52,7 +51,7 @@ export default {
                 }
             }
         },
-        value: {
+        settedDelta: {
             type: Object,
             default: null
         },
@@ -92,15 +91,7 @@ export default {
 
             this.$options.quill = new Quill(this.$refs.quill, this.options);
             this.shareSourceControllers();
-            // this.$options.sources.set(CitationsSource.name, this.$options.quill.getModule(CitationsSource.name))
-            // window.quill = this.$options.quill;
             
-            /*
-            // console.log(this.$options.sources.get(CitationsSource.name));
-            this.$emit('new-source-type', {
-                name: CitationsSource.name,
-                module: this.$options.sources.get(CitationsSource.name)
-            })
             
             /**
              * Quill is created.
@@ -108,8 +99,6 @@ export default {
              *
              * @event Quill#created
              * @type {object}
-             * @property {Quill} target - the quill instance.
-             * @property {external:HTMLElement} container - the quill container node.
              */
             this.$emit('created', {
                 target: this.$options.quill,
@@ -118,34 +107,23 @@ export default {
             });
 
             /**
-             * Happens when the content of quill is changed. Meant to be 
-             * handeld by model-binder and assign the $event value to the 
-             * binded variable.
-             * It's not emitted if the change source is 'value-watch', to 
-             * prevent an inifinite loop if the change of the variable binded
-             * to value changes the value prop, that changes quill, and emits 
-             * an input event that changes the binded variable.
-             *
+             * Emit 'input' on quill change content.
+             * 
              * @event Quill#input
              * @type {object}
-             * @property {Quill} target - the quill instance.
-             * @property {external:HTMLElement} container - the quill container node.
              */
             this.$options.quill.on('text-change', function (delta, oldDelta, source) {
-                // 
-                if (source !== 'value-watch') {
-                    this.$emit('input', this.getContents(delta, oldDelta, source));
-                }
+                this.$emit('input', this.getContents(delta, oldDelta, source));
             }.bind(this));
 
             this.$options.quill.scroll.domNode.addEventListener('focus', (event) => {
                 this.focused = true;
-                this.$emit('q-focus');
+                this.$emit('focus', event);
             });
 
             this.$options.quill.scroll.domNode.addEventListener('blur', (event) => {
                 this.focused = false;
-                this.$emit('q-blur');
+                this.$emit('blur', event);
             });
             
         }
@@ -158,6 +136,7 @@ export default {
          * @param {object} delta new delta from change callback
          * @param {object} oldDelta from change callback
          * @param {string} source from change callback
+         * @returns {object}
          */
         getContents(delta = null, oldDelta = null, source = null) {
             return {
@@ -181,7 +160,6 @@ export default {
                 }
                 this.options['modules'][sp.name] = sp.options;
                 console.log('-->options.modules.'+sp.name+': ', this.options['modules'][sp.name]  )
-                // this.$options.sources.set(sp.name, this.$options.quill.getModule(sp.name))
             });
         },
         shareSourceControllers () {
@@ -198,21 +176,18 @@ export default {
     },
     watch: {
         /** 
-         * Updates quill contents
+         * Binds value prop change to quill contents
          * 
-         * @param {object} contents Has to have a 'delta' property with a valid 
-         * delta and is provided by the parent setter.
-         * @param {object} oldContents the anterior content object, provided 
-         * by the vue watch callback.
+         * @param {object} Delta 
+         * @param {object} oldDelta 
          */
-        value(contents, oldContents) {
-            console.log('Quill-delta: new: %o, old: %o', contents.delta, oldContents.delta);
-            let data = getDelta.fromRaw(contents.delta);
+        settedDelta(Delta, oldDelta) {
+            console.log('Quill-delta: new: %o, old: %o', Delta, oldDelta);
+            let data = getDelta.fromRaw(Delta);
             if(data) {
-                this.$options.quill.setContents(data, 'value-watch');
+                this.$options.quill.setContents(Delta, 'setted-delta-watch');
             } else {
-                console.warn('Quill: invalid delta %o', contents.delta);
-                /** @todo mutate the original binded variable vía an 'input' event. */
+                console.warn('Quill: invalid delta %o', Delta);
                 /** @todo emit some kind of error notification.. */
             }
         }

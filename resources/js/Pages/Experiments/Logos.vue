@@ -5,6 +5,8 @@
         :active-class="'border-blue-200'"
         class=" h-full "
         @new-source-controller="onNewSourceController"
+        @input="post.content = $event"
+        :setted-delta="settedDelta"
     />
 </div>
 </template>
@@ -41,6 +43,14 @@ export default {
             SourceProviders: [
                 CitationsSource
             ]
+        }
+    },
+    data() {
+        return {
+            post: {
+                content: {}
+            },
+            settedDelta: {}
         }
     },
     components: {
