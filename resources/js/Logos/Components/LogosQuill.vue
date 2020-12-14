@@ -28,7 +28,10 @@
 <script>
 
 import Quill from "../quill/quill";
+import SourceBlot from 'dsm/quill/blots/source'
 import { getDelta } from "../utils/functions";
+
+window.Quill = Quill;
 
 let toolbarOptions = [
     ['bold', 'italic'], 
@@ -79,6 +82,7 @@ export default {
     },
 
     created () {
+        this.registerSourceBlot();
         this.registerSourceControllers();
     },
 
@@ -91,6 +95,8 @@ export default {
 
             this.$options.quill = new Quill(this.$refs.quill, this.options);
             this.shareSourceControllers();
+
+            window.quill = this.$options.quill;
             
             
             /**
@@ -150,16 +156,22 @@ export default {
                 }
             }
         },
+        registerSourceBlot() {
+            if(!Quill.imports.hasOwnProperty('formats/source')) {
+                // console.log('registrando source blot');
+                Quill.register(SourceBlot);
+            }
+        },
         registerSourceControllers () {
             this.SourceProviders.forEach(sp => {
-                if (Object.keys(Quill.imports).indexOf('modules/' + sp.name ) < 0) {
-                    Quill.register('modules/' + sp.name, sp.module);
+                // if (Object.keys(Quill.imports).indexOf('modules/' + sp.name ) < 0) {
+                if (!Quill.imports.hasOwnProperty('modules/' + sp.name )) {
+                Quill.register('modules/' + sp.name, sp.module);
                     console.log('Modulo: ' + sp.name + ' registrado', Quill.import('modules/' + sp.name));
                 } else {
                     console.log('Modulo: ' + sp.name + ' ya se encuentra registrado')
                 }
                 this.options['modules'][sp.name] = sp.options;
-                console.log('-->options.modules.'+sp.name+': ', this.options['modules'][sp.name]  )
             });
         },
         shareSourceControllers () {
@@ -198,26 +210,26 @@ export default {
 <style>
 @import 'quill/dist/quill.core.css';
 @import 'quill/dist/quill.bubble.css';
+@import '../css/logos.css';
 
-
-.ql-container {
+.ql-editor {
     @apply font-sans
 }
 
-.ql-container h2, .ql-container h3 {
+.ql-editor h2, .ql-editor h3 {
     @apply font-semibold text-gray-700;
 }
-.ql-container h2 {
+.ql-editor h2 {
     @apply mt-5 mb-1 ;
 
 }
 
-.ql-container h3 {
+.ql-editor h3 {
     @apply mt-3 mb-1;
 
 }
 
-.ql-container p {
+.ql-editor p {
     @apply mb-2 ;
 
 }

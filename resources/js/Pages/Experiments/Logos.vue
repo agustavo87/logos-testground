@@ -35,14 +35,17 @@ const CitationsSource = {
 };
 window.SourceProviders = [CitationsSource];
 
+const logosSourceControllers = new Map()
+window.logosSourceControllers = logosSourceControllers;
 
 export default {
-    sources: new Map(),
+    sources: logosSourceControllers,
     provide () {
         return {
             SourceProviders: [
                 CitationsSource
-            ]
+            ],
+            SourceControllers: logosSourceControllers
         }
     },
     data() {
@@ -63,7 +66,6 @@ export default {
             console.log(this.$options.sources.get(SourceController.name));
         }
     }
-
 }
 
 </script>
