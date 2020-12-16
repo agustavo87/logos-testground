@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueMeta from 'vue-meta'
 import { App, plugin } from '@inertiajs/inertia-vue'
 import { InertiaProgress } from '@inertiajs/progress'
@@ -9,6 +10,45 @@ import { InertiaProgress } from '@inertiajs/progress'
 import route from 'ziggy';
 // depends on object "Matice" frome @translations blade directive.
 import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
+
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    count: 0,
+    todos: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false }
+    ]
+  },
+  mutations: {
+    increment (state, n) {
+      state.count += n;
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit('increment', 3)
+    },
+    incrementAsync ({ commit }) {
+      setTimeout(() => {
+        commit('increment', 5)
+      }, 5000)
+    }
+  },
+  getters: {
+    doneTodos: state => {
+      return state.todos.filter(todo => todo.done)
+    },
+    doneTodosCount: (state, getters) => {
+      return getters.doneTodos.length
+    },
+    getTodoById: (state) => (id) => {
+      return state.todos.find(todo => todo.id === id)
+    }
+  }
+})
 
 Vue.mixin({
   methods: {
@@ -73,7 +113,11 @@ const myApp = new Vue({
       },
     },
   }),
+  store: store
 })
+
+store.dispatch('increment');
+store.dispatch('incrementAsync');
 
 myApp.$mount(el)
 window.myApp = myApp;

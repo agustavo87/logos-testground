@@ -8,6 +8,11 @@
         @input="post.content = $event"
         :setted-delta="settedDelta"
     />
+    <button @click="aumentar">Aumentar</button>
+    <p>{{ count }}</p>
+    <p>{{ cuadrado }}</p>
+    <p>{{ doneTodosCount }}</p>
+    <p>Second todo status: {{ secondTodoStatus }}</p>
 </div>
 </template>
 
@@ -15,12 +20,13 @@
 import Logos from '../../Logos/Components/LogosQuill'
 import Citations from 'dsm/quill/modules/Citations';
 import {SourceTypes} from 'dsm/DSM/SourceTypes';
+import { mapState, mapGetters, mapActions } from 'vuex'
 
-/** @type {SourceProvider} */
+/** @type {SourceProviderOptions} */
 const CitationsSource = {
     name: 'citation',
     module: Citations,
-    /** @type {CitationsProperties} */
+    /** @type {SourceProperties} */
     options: {
             type: SourceTypes.CITATION_DOCUMENT,
             class: 'citation',
@@ -59,12 +65,36 @@ export default {
     components: {
         Logos
     },
+    computed:{   
+        cuadrado () {
+            return this.count * this.count;
+        },
+        secondTodoStatus () {
+            return this.$store.getters.getTodoById(2).done;
+        },
+        ...mapState(
+            {
+                count: state => state.count
+            }
+        ),
+        ...mapGetters([
+            'doneTodosCount'
+        ])
+    },
     methods: {
         onNewSourceController (SourceController) {
             this.$options.sources.set(SourceController.name, SourceController.module);
             console.log('new source type:');
             console.log(this.$options.sources.get(SourceController.name));
-        }
+        },
+        aumentar() {
+            this.$store.commit('increment', 2);
+            console.log(this.count);
+        },
+        ...mapActions([
+            'increment',
+            'incrementBy'
+        ])
     }
 }
 

@@ -101,8 +101,8 @@ export default {
             
             /**
              * Quill is created.
+             * 
              * Can be used to have acces to the quill instance.
-             *
              * @event Quill#created
              * @type {object}
              */
