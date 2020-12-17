@@ -1,6 +1,7 @@
 /** @typedef {import('dsm/quill/modules/Citations').CitationsOptions} CitationsOptions */
 /** @typedef {import('dsm/quill/modules/Citations').default} Citations */
 /** @typedef {import('vuex').Store}  Store*/
+/** @typedef {import('quill').default}  Quill*/
 
 
 /**
@@ -101,9 +102,9 @@ class SourceServiceProvider {
     }
 
     /**
-     * Quill instance in wich register the module
+     * Registers the module
      * 
-     * @param {Quill} quill 
+     * @param {Quill} Quill - Quill class
      */
     register(Quill) {
         if (!Quill.imports.hasOwnProperty('modules/' + this._options.name )) {
