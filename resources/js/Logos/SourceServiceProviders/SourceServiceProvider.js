@@ -1,4 +1,6 @@
 /** @typedef {import('dsm/quill/modules/Citations').CitationsOptions} CitationsOptions */
+/** @typedef {import('dsm/quill/modules/Citations').default} Citations */
+/** @typedef {import('vuex').Store}  Store*/
 
 
 /**
@@ -32,21 +34,27 @@ class SourceServiceProvider {
      * Instantiates the SourceServiceProvider
      * 
      * @param {SourceServiceProviderOptions} options 
-     * @param {Vuex} store 
-     * @param {SourceCRUDInterface} api 
+     * @param {Store} store  - Vuex Store
+     * @param {SourceCRUDInterface} api - Backend API
      */
     constructor(options, store, api) {
         this._options = options;
         this.store = store;
         this.api = api
 
-        this.controller = null;
+        this._controller = null;
         this.Quill = null;
         this.quill = null;
 
         this.cacheCitationsOptions()
     }
 
+    /**
+     * Caches the merged citations options.
+     * 
+     * Replaces the CB handlers with methods in this
+     * class. Wich calls at the time the provided CBs.
+     */
     cacheCitationsOptions() {
         this.cachedCitationsOptions = {
             type: this._options.options.type,
@@ -62,7 +70,7 @@ class SourceServiceProvider {
     /**
      * Handles the Citations create callback
      * 
-     * @param {external:HTMLElement} node - The node of the quill embed element
+     * @param {HTMLElement} node - The node of the quill embed element
      * @param {object} data - Of the reference {i, key} 
      * @param {Citations} controller - The citations object that manage the Reference
     */
@@ -73,7 +81,7 @@ class SourceServiceProvider {
     /**
      * Handles the Citations update callback
      * 
-     * @param {external:HTMLElement} node - The node of the quill embed element
+     * @param {HTMLElement} node - The node of the quill embed element
      * @param {object} data - Of the reference {i, key} 
      * @param {Citations} controller - The citations object that manage the Reference
     */
@@ -84,7 +92,7 @@ class SourceServiceProvider {
     /**
      * Handles the Citations remove callback
      * 
-     * @param {external:HTMLElement} node - The node of the quill embed element
+     * @param {HTMLElement} node - The node of the quill embed element
      * @param {object} data - {i, key. id} 
      * @param {Citations} controller - The citations object that manage the Reference
     */
@@ -100,7 +108,7 @@ class SourceServiceProvider {
     register(Quill) {
         if (!Quill.imports.hasOwnProperty('modules/' + this._options.name )) {
             Quill.register('modules/' + this._options.name, this._options.module);
-            console.log('Modulo: ' + this._options.name + ' registrado', Quill.import('modules/' + this._options.name));
+            // console.log('Modulo: ' + this._options.name + ' registrado', Quill.import('modules/' + this._options.name));
         } else {
             console.log('Modulo: ' + this._options.name + ' ya se encuentra registrado')
         }
@@ -116,10 +124,9 @@ class SourceServiceProvider {
     setController(quill) {
         let controller = null;
         if (controller = quill.getModule(this._options.name)) {
-            this.controller = controller;
+            this._controller = controller;
         }
         this.quill = quill;
-
     }
 
     /**
@@ -132,6 +139,19 @@ class SourceServiceProvider {
         return this.cachedCitationsOptions;
     }
 
+    get name() {
+        return this._options.name;
+    }
+
+    get module() {
+        return this._options.module;
+    }
+
+    get controller() {
+        return this._controller ? this._controller : null;
+    }
+
 }
+
 
 export default SourceServiceProvider;
