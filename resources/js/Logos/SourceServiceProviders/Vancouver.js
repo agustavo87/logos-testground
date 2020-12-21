@@ -13,8 +13,8 @@ import Citations from 'dsm/quill/modules/Citations';
 SourceTypes['CITATION_VANCOUVER'] = "citation-vancouver";
 
 /** @type {SourceServiceProviderOptions} */
-const VancouverSSPOptions = {
-    name: 'citation',
+export const VancouverSSPOptions = {
+    name: 'citation_vancouver',
     module: Citations,
     /** @type {CitationsOptions} */
     options: {
@@ -32,15 +32,39 @@ const VancouverSSPOptions = {
 
 
 class VancouverSSP extends SourceServiceProvider {
+
+    constructor() {
+        super(...arguments);
+        this._this = this;
+        this.hola = 'hola';
+    }
+
     create(node, data, controller) {
-        super.create();
+        // console.log('VancouverSSP.create.this:', this)
+        // if(!this.hasOwnProperty('_options')) {
+        //     console.error('error! no existe el objeto \'this\' correcto')
+        // }
+
+        super.create(node, data, controller)
     }
     update(node, data, controller) {
-        super.update();
+        // console.log('VancouverSSP.create.this:', this)
+        // if(!this.hasOwnProperty('_options')) {
+        //     console.error('error! no existe el objeto \'this\' correcto')
+        // }
+        super.update(node, data, controller)
     }
     remove(node, data, controller) {
-        super.remove();
+        // console.log('VancouverSSP.create.this:', this)
+        // if(!this.hasOwnProperty('_options')) {
+        //     console.error('error! no existe el objeto \'this\' correcto')
+        // }
+        super.remove(node, data, controller)
     }
+
 }
 
-export default Vancouver = new VancouverSSP(VancouverSSPOptions)
+const store = {}; // temp mocks
+const api = {};
+const Vancouver = new VancouverSSP(VancouverSSPOptions, store, api)
+export default Vancouver;

@@ -42,7 +42,7 @@ export default {
     name: "Logos",
     quill: null,
     inheritAttrs: false,
-    inject: ['SourceProviders'],
+    inject: ['logosSSP'],
     props: {
         options: {
             type: Object, 
@@ -83,7 +83,7 @@ export default {
 
     created () {
         this.registerSourceBlot();
-        this.registerSourceControllers();
+        this.registerSourceServiceProviders();
     },
 
     /** @fires Quill#created */
@@ -94,7 +94,7 @@ export default {
             };
 
             this.$options.quill = new Quill(this.$refs.quill, this.options);
-            this.shareSourceControllers();
+            this.registerSourceModules();
 
             window.quill = this.$options.quill;
             
@@ -162,28 +162,16 @@ export default {
                 Quill.register(SourceBlot);
             }
         },
-        registerSourceControllers () {
-            this.SourceProviders.forEach(sp => {
-                // if (Object.keys(Quill.imports).indexOf('modules/' + sp.name ) < 0) {
-                if (!Quill.imports.hasOwnProperty('modules/' + sp.name )) {
-                Quill.register('modules/' + sp.name, sp.module);
-                    console.log('Modulo: ' + sp.name + ' registrado', Quill.import('modules/' + sp.name));
-                } else {
-                    console.log('Modulo: ' + sp.name + ' ya se encuentra registrado')
-                }
-                this.options['modules'][sp.name] = sp.options;
+        registerSourceServiceProviders () {
+            this.logosSSP.forEach((SSP, name) => {
+                SSP.register(Quill);
+                this.options['modules'][name] = SSP.citationsOptions;
             });
         },
-        shareSourceControllers () {
-            let SourceController = {};
-            this.SourceProviders.forEach(sp => {
-                if (SourceController = this.$options.quill.getModule(sp.name)) {
-                    this.$emit('new-source-controller', {
-                        name: sp.name,
-                        module: SourceController
-                    });
-                }
-            });
+        registerSourceModules () {
+            this.logosSSP.forEach((SSP, name) => {
+                SSP.setController(this.$options.quill)
+            })
         }
     },
     watch: {

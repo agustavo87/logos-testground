@@ -61,9 +61,9 @@ class SourceServiceProvider {
             type: this._options.options.type,
             class: this._options.options.class,
             handlers: {
-                create: this.create,
-                update: this.update,
-                remove: this.remove
+                create: this.create.bind(this),
+                update: this.update.bind(this),
+                remove: this.remove.bind(this),
             }
         }
     }
@@ -76,7 +76,10 @@ class SourceServiceProvider {
      * @param {Citations} controller - The citations object that manage the Reference
     */
     create(node, data, controller) {
-        this._options.options.handlers.create(node, data, controller);
+        // console.log('root create called');
+        if (this._options.options.handlers.create !== undefined) {
+            this._options.options.handlers.create(node, data, controller);
+        }
     }
 
     /**
@@ -87,7 +90,10 @@ class SourceServiceProvider {
      * @param {Citations} controller - The citations object that manage the Reference
     */
     update(node, data, controller) {
-        this._options.options.handlers.update(node, data, controller);
+        // console.log('root update called');
+        if (this._options.options.handlers.update !== undefined) {
+            this._options.options.handlers.update(node, data, controller);
+        }
     }
 
     /**
@@ -98,7 +104,10 @@ class SourceServiceProvider {
      * @param {Citations} controller - The citations object that manage the Reference
     */
     remove(node, data, controller) {
-        this._options.options.handlers.remove(node, data, controller);
+        // console.log('root remove called');
+        if (this._options.options.handlers.remove !== undefined) {
+            this._options.options.handlers.remove(node, data, controller);
+        }
     }
 
     /**
