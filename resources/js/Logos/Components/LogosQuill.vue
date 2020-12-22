@@ -98,7 +98,6 @@ export default {
 
             window.quill = this.$options.quill;
             
-            
             /**
              * Quill is created.
              * 

@@ -33,12 +33,6 @@ export const VancouverSSPOptions = {
 
 class VancouverSSP extends SourceServiceProvider {
 
-    constructor() {
-        super(...arguments);
-        this._this = this;
-        this.hola = 'hola';
-    }
-
     create(node, data, controller) {
         // console.log('VancouverSSP.create.this:', this)
         // if(!this.hasOwnProperty('_options')) {

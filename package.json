@@ -13,18 +13,17 @@
         "@babel/core": "^7.12.3",
         "@babel/preset-env": "^7.12.1",
         "@babel/preset-typescript": "^7.12.1",
-        "@types/jest": "^26.0.19",
-        "babel-jest": "^26.6.3",
-        "jest": "^26.6.3",
         "@inertiajs/inertia": "^0.6.1",
         "@inertiajs/inertia-vue": "^0.4.1",
         "@inertiajs/progress": "^0.2.2",
+        "@types/jest": "^26.0.19",
         "autoprefixer": "^10.1.0",
         "axios": "^0.19",
+        "babel-jest": "^26.6.3",
         "browser-sync": "^2.26.13",
-        "browser-sync-webpack-plugin": "^2.2.2",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "cross-env": "^7.0",
-        "dsm": "github:agustavo87/dsm",
+        "jest": "^26.6.3",
         "laravel-mix": "^5.0.9",
         "lodash": "^4.17.19",
         "matice": "^1.1.2",
@@ -36,7 +35,8 @@
         "vue": "^2.6.12",
         "vue-meta": "^2.4.0",
         "vue-template-compiler": "^2.6.12",
-        "vuex": "^3.6.0"
+        "vuex": "^3.6.0",
+        "dsm": "github:agustavo87/dsm"
     },
     "dependencies": {
         "@tailwindcss/ui": "^0.7.2"
