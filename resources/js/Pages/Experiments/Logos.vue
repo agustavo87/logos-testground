@@ -7,10 +7,9 @@
         @input="post.content = $event"
         :setted-delta="settedDelta"
     />
-
     <lg-citations />
+    <lg-source-list />
 </div>
-
 
 
 </template>
@@ -19,6 +18,8 @@
 import Logos from '../../Logos/Components/LogosQuill'
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
 import lgCitations from '../../Logos/Components/Citations'
+import lgSourceList from '../../Logos/Components/SourceList'
+import moduleSource from '../../Logos/Modules/Source'
 
 const logosSSP = new Map();
 logosSSP.set(Vancouver.name, Vancouver);
@@ -39,9 +40,13 @@ export default {
             settedDelta: {}
         }
     },
+    beforeCreate() {
+        this.$store.registerModule('sources', moduleSource)
+    },
     components: {
         Logos,
-        lgCitations
+        lgCitations,
+        lgSourceList
     },
 
 }

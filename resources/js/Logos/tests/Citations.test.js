@@ -1,4 +1,4 @@
-import Citations from 'dsm/quill/modules/Citations';
+import Citations from 'dsm/quill/modules/Citations'; // suele no querer funcionar con npm link
 import SourceBlot from 'dsm/quill/blots/source'
 import {SourceTypes} from 'dsm/DSM/SourceTypes'
 import Quill from 'quill/core'
