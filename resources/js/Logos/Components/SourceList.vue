@@ -1,6 +1,5 @@
 <template>
-<div class=" my-10 mx-auto max-w-lg">
-        <!-- Fuentes: {{sources}} -->
+<div class="my-2 mx-auto max-w-lg">
         <ul class="list-disc">
             <li v-for="source in sources" :key="source.key">
                 {{ source.data }}
@@ -13,7 +12,7 @@ export default {
     name: 'SourceList',
     computed: {
         sources() {
-            return this.$store.state.sources
+            return this.$store.state.repository
         }
     }
 }

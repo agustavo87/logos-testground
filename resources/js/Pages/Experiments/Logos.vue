@@ -1,14 +1,24 @@
 <template>
-<div class=" h-screen pt-10 px-7 bg-gray-100">
+<div class="pt-10 px-7 bg-gray-100">
     <logos 
         :editor-class="['h-full', 'border', 'max-w-lg', 'mx-auto', 'bg-white', 'border-gray-200']" 
         :active-class="'border-blue-200'"
-        class="h-1/2 mb-2"
+        class=" h-44 mb-2"
         @input="post.content = $event"
         :setted-delta="settedDelta"
     />
-    <lg-citations />
-    <lg-source-list />
+    <div class=" max-w-xl mx-auto">
+        <h2 class="font-semibold text-xl mt-5 mb-0">Insertar Fuente</h2>
+        <select-source />
+    </div>
+    <div class=" max-w-xl mx-auto">
+        <h2 class="font-semibold text-xl mt-5 mb-0">Agregar nueva fuente</h2>
+        <add-source />
+    </div >
+    <div class=" max-w-xl mx-auto">
+        <h2 class="font-semibold text-xl mt-5 mb-0">Fuentes disponibles</h2>
+        <source-list />
+    </div>
 </div>
 
 
@@ -17,9 +27,10 @@
 <script>
 import Logos from '../../Logos/Components/LogosQuill'
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
-import lgCitations from '../../Logos/Components/Citations'
-import lgSourceList from '../../Logos/Components/SourceList'
-import moduleSource from '../../Logos/Modules/Source'
+import moduleSourceRepository from '../../Logos/Modules/SourceRepository'
+import AddSource from '../../Logos/Components/AddSource'
+import SourceList from '../../Logos/Components/SourceList'
+import SelectSource from '../../Logos/Components/SelectSource'
 
 const logosSSP = new Map();
 logosSSP.set(Vancouver.name, Vancouver);
@@ -41,12 +52,13 @@ export default {
         }
     },
     beforeCreate() {
-        this.$store.registerModule('sources', moduleSource)
+        this.$store.registerModule('repository', moduleSourceRepository)
     },
     components: {
         Logos,
-        lgCitations,
-        lgSourceList
+        AddSource,
+        SourceList,
+        SelectSource
     },
 
 }
