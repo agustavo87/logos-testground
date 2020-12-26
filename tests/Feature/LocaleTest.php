@@ -13,8 +13,8 @@ class LocaleTest extends TestCase
     protected static string $languageA = 'es';
     protected static string $languageB = 'en';
     protected static $userId;
-    public static bool $verbose = true;
-    public static bool $debug = true;
+    public static bool $verbose = false;
+    public static bool $debug = false;
 
     protected User $user;
     protected Locale $locale;
@@ -68,7 +68,7 @@ class LocaleTest extends TestCase
                          ->putJson("/locale", [
                              'language' => self::$languageB
                          ]);
-        $this->log($response->getData());
+        // $this->log($response->getData());
 
         $this->assertEquals(self::$languageB, App::getLocale());
         $response->assertStatus(200);
@@ -103,7 +103,7 @@ class LocaleTest extends TestCase
             'language' => $otherLanguage
         ]);
 
-        $this->log($response->getData());
+        // $this->log($response->getData());
 
         $this->assertEquals($otherLanguage, App::getLocale());
         $response->assertStatus(200);
@@ -181,7 +181,7 @@ class LocaleTest extends TestCase
                              'language' => $invalidLanguage
                          ]);
         $content = json_decode($response->content());
-        $this->log($content);
+        // $this->log($content);
         $this->assertObjectHasAttribute('errors', $content);
         $this->assertObjectHasAttribute('language', $content->errors);
         $this->log($content->errors->language);
@@ -193,7 +193,7 @@ class LocaleTest extends TestCase
                              'language' => $unsupportedLanguage
                          ]);
         $content = json_decode($response->content());
-        $this->log($content);
+        // $this->log($content);
         $this->assertObjectHasAttribute('errors', $content);
         $this->assertObjectHasAttribute('language', $content->errors);
         $this->log($content->errors->language);

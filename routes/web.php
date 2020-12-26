@@ -17,7 +17,8 @@ use App\Http\Controllers\{
     AuthController,
     UserController,
     LogosController,
-    LocaleController
+    LocaleController,
+    UserSourceController
 };
 
 /**
@@ -84,3 +85,9 @@ Route::group([
     });
 
     Route::put('/locale', [LocaleController::class, 'update'])->name('locale');
+
+
+    Route::resource('users.sources', UserSourceController::class)->scoped([
+        'source' => 'key'
+    ])->middleware('auth'); // ver que significa auth:api
+    

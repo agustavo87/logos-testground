@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Hash;
 class AuthTest extends TestCase
 {
     protected static $userId;
-    public static bool $verbose = true;
-    public static bool $debug = true;
+    public static bool $verbose = false;
+    public static bool $debug = false;
     public static $password = "password";
     public static $language = 'es';
     
@@ -52,8 +52,8 @@ class AuthTest extends TestCase
         $newLocation = $response->headers->all()['location'][0];
         $this->log($newLocation);
         $response->assertRedirect(route('home'));
-        $response->dumpHeaders();
-        $response->dumpSession();
+        // $response->dumpHeaders();
+        // $response->dumpSession();
     }
 
     /**
@@ -72,8 +72,8 @@ class AuthTest extends TestCase
         $newLocation = $response->headers->all()['location'][0];
         $this->log($newLocation);
         // $response->assertRedirect(route('home'));
-        $response->dumpHeaders();
-        $response->dumpSession();
+        // $response->dumpHeaders();
+        // $response->dumpSession();
     }
 
 }
