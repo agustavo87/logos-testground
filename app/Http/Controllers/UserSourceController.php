@@ -19,7 +19,10 @@ class UserSourceController extends Controller
      */
     public function index(User $user)
     {
-        return $user->sources();
+        return $user->sources->map(function ($source) {
+            return collect($source->toArray())
+                ->except(['id', 'user_id']);
+        });
     }
 
 

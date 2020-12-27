@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Source;
 use Tests\FixturableTestCase as TestCase;
 use App\Models\User;
 
@@ -207,6 +208,23 @@ class SourcesTest extends TestCase
      */
     public function test_index_sources(string $key): string
     {
+        $sources = Source::factory()
+            ->count(3)
+            ->for(User::factory())
+            ->create();
+        $user = $sources[0]->user;
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson("users/{$user->id}/sources");
+        $this->logStatus($response, 200);
+        $response->dump();
+        $sources->each(function ($source) use ($response) {
+            $response->assertJsonFragment([
+                'data' => $source->data
+            ]); 
+        });
+        
         return $key;
     }
 

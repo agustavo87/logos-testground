@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Source;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class SourceFactory extends Factory
 {
@@ -21,8 +23,18 @@ class SourceFactory extends Factory
      */
     public function definition()
     {
+        $name = $this->faker->lastName;
+        $year = $this->faker->unique()->numberBetween(1970, 2021);
+        
+        $nameInitial = Str::upper($this->faker->randomLetter);
+        $title = Str::title($this->faker->sentence);
+        $editorial = Str::title($this->faker->word);
+        $city = Str::title($this->faker->city);
+
         return [
-            //
+            'user_id' => User::factory(),
+            'key' => "$name$year",
+            'data' => "$name, $nameInitial. ($year). $title $editorial: $city."
         ];
     }
 }
