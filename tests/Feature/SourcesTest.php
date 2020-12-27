@@ -54,6 +54,8 @@ class SourcesTest extends TestCase
      * Depends on
      * - getStatusText macro
      * - LogsInformation trait
+     * @param \Illuminate\Testing\TestResponse $response
+     * @param int $expected 
      *
      * @return string
      */
@@ -64,25 +66,11 @@ class SourcesTest extends TestCase
     }
 
     /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_a_basic_request() 
-    {
-        $response = $this->get('/');
-
-        $response->assertRedirect();
-        $this->logStatus($response, 302);
-        
-    }
-
-    /**
      * Error on un-auntheticated attemp.
      *
      * @return void
      */
-    public function test_throws_on_post_a_source_unauthenticated() 
+    public function test_return_error_on_post_a_source_unauthenticated() 
     {
         $key = 'gus2020';
         $data = 'Gustavo, A. (2020). El ocaso del menemismo amarillo. Viñeta2: Buenos Aires.';
@@ -136,20 +124,18 @@ class SourcesTest extends TestCase
     /**
      * Get a source data.
      * @depends test_posts_a_source
-     * @return void
+     * @param string $key
+     * @return string
      */
-    public function test_gets_a_source(string $key) 
+    public function test_gets_a_source(string $key): string
     {
         // $key = 'gus2020';
-        $data = 'Gustavo, A. (2020). El ocaso del menemismo amarillo. Viñeta2: Buenos Aires.';
         $response = $this
             ->actingAs($this->user)
             ->getJson("/users/{$this->user->id}/sources/$key");
 
         
         $this->logStatus($response, 200);
-        // $response->dump();
-        // $response->dumpHeaders();
 
         $response
             ->assertStatus(200) // ok
@@ -158,8 +144,70 @@ class SourcesTest extends TestCase
                 'user_id' => $this->user->id
             ]);
 
+        return $key;
+
     }
 
+    /**
+     * Updates a source data.
+     * @depends test_gets_a_source
+     * @param string $key
+     * @return string
+     */
+    public function test_updates_a_source(string $key): string
+    {
+        $newData = "Gustavo, A. (2021). El resultado siniestro. Arkadia: Buenos Aires.";
+        $response = $this
+            ->actingAs($this->user)
+            ->putJson("/users/{$this->user->id}/sources/$key", [
+                'data' => $newData
+            ]);
+        $this->logStatus($response, 200);
 
+        $response
+        ->assertStatus(200) // ok
+        ->assertJson([
+            'key' => $key,
+            'user_id' => $this->user->id,
+            'data' => $newData
+        ]);
+
+        $this->assertSame($this->user->sources[0]->data, $newData);
+
+        return $key;
+    }
+
+    /**
+     * Deletes a source data.
+     * @depends test_updates_a_source
+     * @param string $key
+     * @return string
+     */
+    public function test_deletes_a_source(string $key): string
+    {
+        $this->assertTrue($this->user->sources->contains('key', $key));
+        $response = $this
+            ->actingAs($this->user)
+            ->deleteJson("/users/{$this->user->id}/sources/$key");
+
+        $this->logStatus($response, 200);
+        $response
+        ->assertStatus(200); // ok
+        $this->user->refresh();
+        $this->assertFalse($this->user->sources->contains('key', $key));
+
+        return $key;
+    }
+
+    /**
+     * Get a source data.
+     * @depends test_updates_a_source
+     * @param string $key
+     * @return string
+     */
+    public function test_index_sources(string $key): string
+    {
+        return $key;
+    }
 
 }

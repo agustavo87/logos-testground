@@ -87,7 +87,7 @@ Route::group([
     Route::put('/locale', [LocaleController::class, 'update'])->name('locale');
 
 
-    Route::resource('users.sources', UserSourceController::class)->scoped([
+    Route::apiResource('users.sources', UserSourceController::class)->scoped([
         'source' => 'key'
     ])->middleware('auth'); // ver que significa auth:api
     
