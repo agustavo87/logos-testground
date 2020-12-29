@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Source;
 use Tests\FixturableTestCase as TestCase;
-use App\Models\User;
+
+use App\Models\{
+    User,
+    Source
+};
 
 class SourcesTest extends TestCase
 {
@@ -14,6 +17,7 @@ class SourcesTest extends TestCase
     public static bool $debug = true;
 
     protected User $user;
+    protected array $sources;
 
     /**
      * Crea un modelo de usuario para ser usado en los tests.
@@ -22,10 +26,16 @@ class SourcesTest extends TestCase
      */
     protected static function beforeAll(): void
     {
-        self::$userId = User::factory()->create()->id;
         \Illuminate\Testing\TestResponse::macro('getStatusText', function () {
             return \Illuminate\Http\Response::$statusTexts[$this->getStatusCode()];
         });
+        // self::$userId = User::factory()->create()->id;
+        self::$userId  = Source::factory()
+            ->count(10)
+            ->for(User::factory())
+            ->create()[0]->user->id;
+        // $user = $sources[0]->user;
+        // self::$userId = $user->id;
     }
 
     /**
@@ -45,7 +55,7 @@ class SourcesTest extends TestCase
      */
     public function beforeEach(): void
     {
-        $this->user = User::find(self::$userId);
+        $this->user = User::where('id', self::$userId)->first();
         // $this->locale = $this->app->make('locale');
     }
 
@@ -142,7 +152,7 @@ class SourcesTest extends TestCase
             ->assertStatus(200) // ok
             ->assertJson([
                 'key' => $key,
-                'user_id' => $this->user->id
+                'owner_id' => $this->user->id
             ]);
 
         return $key;
@@ -157,7 +167,7 @@ class SourcesTest extends TestCase
      */
     public function test_updates_a_source(string $key): string
     {
-        $newData = "Gustavo, A. (2021). El resultado siniestro. Arkadia: Buenos Aires.";
+        $newData = "Gustavo R., A. (2020). El resultado siniestro. Arkadia: Buenos Aires.";
         $response = $this
             ->actingAs($this->user)
             ->putJson("/users/{$this->user->id}/sources/$key", [
@@ -169,11 +179,11 @@ class SourcesTest extends TestCase
         ->assertStatus(200) // ok
         ->assertJson([
             'key' => $key,
-            'user_id' => $this->user->id,
+            'owner_id' => $this->user->id,
             'data' => $newData
         ]);
 
-        $this->assertSame($this->user->sources[0]->data, $newData);
+        $this->assertSame($this->user->sources->where('key', $key)->first()->data, $newData);
 
         return $key;
     }
@@ -203,28 +213,61 @@ class SourcesTest extends TestCase
     /**
      * Get a source data.
      * @depends test_updates_a_source
+     * 
+     * @todo clean database 
+     * 
      * @param string $key
      * @return string
      */
     public function test_index_sources(string $key): string
     {
-        $sources = Source::factory()
-            ->count(3)
-            ->for(User::factory())
-            ->create();
-        $user = $sources[0]->user;
+        // $sources = Source::factory()
+        //     ->count(3)
+        //     ->for(User::factory())
+        //     ->create();
+        // $user = $sources[0]->user;
 
+        $perPage = 3;
         $response = $this
-            ->actingAs($user)
-            ->getJson("users/{$user->id}/sources");
+            ->actingAs($this->user)
+            ->getJson("users/{$this->user->id}/sources?perpage={$perPage}");
         $this->logStatus($response, 200);
         $response->dump();
-        $sources->each(function ($source) use ($response) {
-            $response->assertJsonFragment([
-                'data' => $source->data
-            ]); 
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data',
+            'links' => [
+                'first',
+                'last',
+                'prev',
+                'next'
+            ],
+            'meta' => [
+                'current_page',
+                'from',
+                'last_page',
+                'links',
+                'path',
+                'per_page',
+                'to',
+                'total',
+                'user' => [
+                    'id',
+                    'name'
+                ]
+            ],
+        ]);
+        $this->user->sources->take($perPage)->each(function ($item) use ($response) {
+            $response->assertJsonFragment(['key' => $item->key]);
         });
-        
+
+
+
+        // $this->user->sources->each(function ($source) use ($response) {
+        //     $response->assertJsonFragment([
+        //         'key' => $source->key
+        //     ]); 
+        // });
         return $key;
     }
 

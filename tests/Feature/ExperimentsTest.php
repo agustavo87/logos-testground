@@ -2,33 +2,41 @@
 
 namespace Tests\Feature;
 
-
+use App\Models\{
+    Source,
+    User
+};
 use Tests\FixturableTestCase as TestCase;
-use Illuminate\Routing\Router;
 
 class ExperimentsTest extends TestCase
 {
 
-    public static bool $verbose = false;
-    public static bool $debug = false;
-    
-    public Router $router;
-    public function beforeEach(): void
-    {
-        $this->router = $this->app->make('router');
-    }
+    public static bool $verbose = true;
+    public static bool $debug = true;
 
-    public function testLogs() 
-    {
-        $this->ok('todo viento');
-        $routeCollection = $this->router->getRoutes();
-        // var_dump($routeCollection->getRoutesByName());
-    }
 
     public function testRequest()
     {
-        $request = $this->get('/');
-        $this->ok('tudo bom');
+        $response = $this->get('/');
+        $response->assertStatus(302);
+    }
+
+    public function testSourceResource()
+    {
+        $source = Source::all()->random();
+
+        $response = $this->get("/test/source/{$source->key}");
+        $response->dump();
+        // $response->assertOk();
+    }
+
+    public function testUserSourcesCollection()
+    {
+        $user = User::all()->random();
+
+        $response = $this->get("/test/user/{$user->id}/sources");
+        $response->dump();
+        $response->assertOk();
     }
 
 }

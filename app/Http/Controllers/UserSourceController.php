@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\{
     Source,
     User
 };
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\SourceCollection;
+use App\Http\Resources\SourceResource;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UserSourceController extends Controller
 {
@@ -17,12 +20,15 @@ class UserSourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index(Request $request, User $user)
     {
-        return $user->sources->map(function ($source) {
-            return collect($source->toArray())
-                ->except(['id', 'user_id']);
-        });
+        // return $user->sources->map(function ($source) {
+        //     return collect($source->toArray())
+        //         ->except(['id', 'user_id', 'data']);
+        // });
+        $perPage = $request->input('perpage',2);
+        $sources_paginated = DB::table('sources')->where('user_id', $user->id)->paginate($perPage);
+        return new SourceCollection($sources_paginated, $user);
     }
 
 
@@ -54,7 +60,7 @@ class UserSourceController extends Controller
      */
     public function show(User $user, Source $source)
     {
-        return $source;
+        return new SourceResource($source);;
     }
 
     /**
@@ -79,7 +85,7 @@ class UserSourceController extends Controller
 
         $source->update($data);
 
-        return $source;
+        return new SourceResource($source);
     }
 
     /**
