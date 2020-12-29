@@ -17,14 +17,14 @@
   * Ties toquether the diferents aspects
   * of source provision.
   * - Quill's modules
-  * - Vue VM
+  * - Vue data
   * - Backend API
   */
 class SourceServiceProvider {
 
     // Instance Properties
     // - Quill - Quill class / after register
-    // - module - the Citations module / after seted the controller
+    // - module - the Citations module / after setted the controller
     // - controller - the Citations instance initialized by quill /once setted
     // - options - the CitationsOptions object.
     // - store - the Vuex store
@@ -135,6 +135,8 @@ class SourceServiceProvider {
         let controller = null;
         if (controller = quill.getModule(this._options.name)) {
             this._controller = controller;
+        } else {
+            console.error('invalid quill controller');
         }
         this.quill = quill;
     }
