@@ -55,7 +55,6 @@ class VancouverSSP extends SourceServiceProvider {
         // }
         super.remove(node, data, controller)
     }
-
 }
 
 const store = {}; // temp mocks

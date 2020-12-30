@@ -8,6 +8,10 @@
         :setted-delta="settedDelta"
     />
     <div class=" max-w-xl mx-auto">
+        <h2 class="font-semibold text-xl mt-5 mb-0">Fuentes del documento</h2>
+        <document-sources-list />
+    </div>
+    <div class=" max-w-xl mx-auto">
         <h2 class="font-semibold text-xl mt-5 mb-0">Insertar Fuente</h2>
         <select-source />
     </div>
@@ -27,14 +31,17 @@
 <script>
 import Logos from '../../Logos/Components/LogosQuill'
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
-import moduleSourceRepository from '../../Logos/Modules/SourceRepository'
-import AddSource from '../../Logos/Components/AddSource'
-import SourceList from '../../Logos/Components/SourceList'
-import SelectSource from '../../Logos/Components/SelectSource'
+import moduleAcademicSources from '../../Logos/Modules/AcademicSources'
+import AddSource from '../../Logos/Components/DocumentSources/AddSource'
+import SourceList from '../../Logos/Components/DocumentSources/SourceList'
+import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
+import DocumentSourcesList from '../../Logos/Components/DocumentSources/DocumentSourcesList'
 
 const logosSSP = new Map();
 logosSSP.set(Vancouver.name, Vancouver);
 window.logosSSP = logosSSP;
+
+
 
 
 export default {
@@ -53,13 +60,15 @@ export default {
         }
     },
     beforeCreate() {
-        this.$store.registerModule('repository', moduleSourceRepository)
+        this.$store.registerModule('academic', moduleAcademicSources)
+        Vancouver.setStore(this.$store);
     },
     components: {
         Logos,
         AddSource,
         SourceList,
-        SelectSource
+        SelectSource,
+        DocumentSourcesList
     },
 
 }
