@@ -36,6 +36,7 @@ const logosSSP = new Map();
 logosSSP.set(Vancouver.name, Vancouver);
 window.logosSSP = logosSSP;
 
+
 export default {
     sources: logosSSP,
     provide () {

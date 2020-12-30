@@ -40,8 +40,8 @@ class SourceServiceProvider {
      */
     constructor(options, store, api) {
         this._options = options;
-        this.store = store;
-        this.api = api
+        this._store = store;
+        this._api = api
 
         this._controller = null;
         this.Quill = null;
@@ -140,6 +140,49 @@ class SourceServiceProvider {
         }
         this.quill = quill;
     }
+
+    /**
+     * Saves the API interface
+     * 
+     * @param {Object} api - Quill instance where is the initialized
+     * controller.
+     */
+    setAPI(api) {
+        if (this._api != null) {
+            console.warn('API already set, will be overwritten.')
+        }
+        this._api = api;
+    }
+
+    get api() {
+        return this._api;
+    }
+
+    /**
+     * Saves the Vuex Store
+     * 
+     * @param {VuexStore} store - Quill instance where is the initialized
+     * @param {string} name - The module name
+     * controller.
+     */
+    setStore(store, name = null) {
+        name = name ? name : this._options.name;
+        if (this._store != null) {
+            console.warn('Store already set, will be overwritten.')
+        }
+        this._store = store;
+        this._moduleName = name;
+    }
+
+    get store() {
+        return this._store;
+    }
+
+    get moduleName() {
+        return this._moduleName;
+    }
+
+
 
     /**
      * Get the options object for the module.

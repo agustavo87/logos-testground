@@ -83,3 +83,27 @@ it('saves the quill Citations module instance', () => {
 
     expect(mySSP.controller).toBe(quill.getModule(mySSP.name));
 });
+
+/**
+ * @todo Probar integración con Vuex Store
+ * @todo Probar integración con Backend
+ */
+
+ it('saves store', () => {
+    jest.resetModules();
+    const mySSP = new SourceServiceProvider(SSPOptions, Store, API);
+
+    const mockStore = {};
+    mySSP.setStore(mockStore);
+    expect(mySSP.store).toBe(mockStore);
+    expect(mySSP.moduleName).toBe(mySSP.name); // default
+ });
+
+ it('saves api', () => {
+    jest.resetModules();
+    const mySSP = new SourceServiceProvider(SSPOptions, Store, API);
+
+    const mockApi = {};
+    mySSP.setAPI(mockApi);
+    expect(mySSP.api).toBe(mockApi);
+ });
