@@ -41,20 +41,16 @@
 </template>
 
 <script>
-import Logos from '../../Logos/Components/LogosQuill'
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
-// import moduleAcademicSources from '../../Logos/Modules/AcademicSources'
-import AddSource from '../../Logos/Components/DocumentSources/AddSource'
-import SourceList from '../../Logos/Components/DocumentSources/SourceList'
-import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
+import Logos from '../../Logos/Components/LogosQuill'
 import DocumentSourcesList from '../../Logos/Components/DocumentSources/DocumentSourcesList'
+import AddSource from '../../Logos/Components/DocumentSources/AddSource'
+import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
+import SourceList from '../../Logos/Components/DocumentSources/SourceList'
 
 const logosSSP = new Map();
 logosSSP.set(Vancouver.name, Vancouver);
 window.logosSSP = logosSSP;
-
-
-
 
 export default {
     sources: logosSSP,
@@ -78,7 +74,6 @@ export default {
         }
     },
     beforeCreate() {
-        // this.$store.registerModule('academic', moduleAcademicSources)
         Vancouver.setStore(this.$store);
     },
     components: {
