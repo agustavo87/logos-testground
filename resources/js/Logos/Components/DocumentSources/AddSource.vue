@@ -14,6 +14,7 @@ import lgButton from '../Base/Button';
 
 export default {
     name: 'AddSource',
+    props: ['moduleName', 'storeName'],
     components: {
         lgLabel,
         lgTextInput,
@@ -30,7 +31,7 @@ export default {
     methods: {
         putSource() {
             console.log('poniendo cita');
-            this.$store.commit('academic/save', this.source);
+            this.$store.commit(this.storeName + '/save', this.source);
             this.source = {
                 key: '',
                 data: ''

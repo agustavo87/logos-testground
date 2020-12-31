@@ -89,6 +89,7 @@ export default {
     /** @fires Quill#created */
     mounted () {
         if (this.$options.quill === null) {
+            
             this.options['modules']['toolbar'] = {
                 container: this.$refs.toolbar
             };

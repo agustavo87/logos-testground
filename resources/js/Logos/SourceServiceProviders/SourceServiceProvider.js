@@ -35,19 +35,70 @@ class SourceServiceProvider {
      * Instantiates the SourceServiceProvider
      * 
      * @param {SourceServiceProviderOptions} options 
-     * @param {Store} store  - Vuex Store
+     * @param {Object} storeModule  
      * @param {SourceCRUDInterface} api - Backend API
      */
-    constructor(options, store, api) {
+    constructor(options, storeModule,  api) {
         this._options = options;
-        this._store = store;
+        
         this._api = api
 
-        this._controller = null;
+        // setted on logos boot
         this.Quill = null;
+
+        // is setted on quill boot
         this.quill = null;
+        this._controller = null;
+
+        // Store
+        this._storeModule = storeModule;
+        // is setted after Vuex boot
+        this._store = null;
+        this._storeModuleName = null;
 
         this.cacheCitationsOptions()
+    }
+
+    /**
+     * Handles the Citations 'create' callback
+     * 
+     * @param {HTMLElement} node - The node of the quill embed element
+     * @param {object} data - Of the reference {i, key} 
+     * @param {Citations} controller - The citations object that manage the Reference
+    */
+    create(node, data, controller) {
+        // console.log('root create called');
+        if (this._options.options.handlers.create !== undefined) {
+            this._options.options.handlers.create(node, data, controller);
+        }
+    }   
+
+    /**
+     * Handles the Citations 'update' callback
+     * 
+     * @param {HTMLElement} node - The node of the quill embed element
+     * @param {object} data - Of the reference {i, key} 
+     * @param {Citations} controller - The citations object that manage the Reference
+    */
+    update(node, data, controller) {
+        // console.log('root update called');
+        if (this._options.options.handlers.update !== undefined) {
+            this._options.options.handlers.update(node, data, controller);
+        }
+    }
+
+    /**
+     * Handles the Citations 'remove' callback
+     * 
+     * @param {HTMLElement} node - The node of the quill embed element
+     * @param {object} data - {i, key. id} 
+     * @param {Citations} controller - The citations object that manage the Reference
+    */
+    remove(node, data, controller) {
+        // console.log('root remove called');
+        if (this._options.options.handlers.remove !== undefined) {
+            this._options.options.handlers.remove(node, data, controller);
+        }
     }
 
     /**
@@ -68,65 +119,27 @@ class SourceServiceProvider {
         }
     }
 
-    /**
-     * Handles the Citations create callback
-     * 
-     * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - Of the reference {i, key} 
-     * @param {Citations} controller - The citations object that manage the Reference
-    */
-    create(node, data, controller) {
-        // console.log('root create called');
-        if (this._options.options.handlers.create !== undefined) {
-            this._options.options.handlers.create(node, data, controller);
-        }
+    get citationsOptions() {
+        return this.cachedCitationsOptions;
     }
 
-    /**
-     * Handles the Citations update callback
-     * 
-     * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - Of the reference {i, key} 
-     * @param {Citations} controller - The citations object that manage the Reference
-    */
-    update(node, data, controller) {
-        // console.log('root update called');
-        if (this._options.options.handlers.update !== undefined) {
-            this._options.options.handlers.update(node, data, controller);
-        }
-    }
 
     /**
-     * Handles the Citations remove callback
-     * 
-     * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - {i, key. id} 
-     * @param {Citations} controller - The citations object that manage the Reference
-    */
-    remove(node, data, controller) {
-        // console.log('root remove called');
-        if (this._options.options.handlers.remove !== undefined) {
-            this._options.options.handlers.remove(node, data, controller);
-        }
-    }
-
-    /**
-     * Registers the module
+     * Registers the Quill's module.
      * 
      * @param {Quill} Quill - Quill class
      */
     register(Quill) {
         if (!Quill.imports.hasOwnProperty('modules/' + this._options.name )) {
             Quill.register('modules/' + this._options.name, this._options.module);
-            // console.log('Modulo: ' + this._options.name + ' registrado', Quill.import('modules/' + this._options.name));
         } else {
-            console.log('Modulo: ' + this._options.name + ' ya se encuentra registrado')
+            console.warn('Modulo: ' + this._options.name + ' ya se encuentra registrado')
         }
         this.Quill = Quill;
     }
 
     /**
-     * Saves the Citations instance controller when initialized
+     * Saves the Quill's module instance after initialized.
      * 
      * @param {Quill} quill - Quill instance where is the initialized
      * controller.
@@ -140,6 +153,47 @@ class SourceServiceProvider {
         }
         this.quill = quill;
     }
+
+    get controller() {
+        return this._controller;
+    }
+
+    /**
+     * Saves the Vuex Store
+     * 
+     * @param {VuexStore} store - Quill instance where is the initialized
+     * @param {string} name - The module name
+     * controller.
+     */
+    setStore(store, name = null) {
+        name = name ? name : this._options.name;
+        if (this._store != null) {
+            console.warn('Store already set, will be overwritten.')
+        }
+        this._store = store;
+        this._storeModuleName = name;
+
+        // this.$store.registerModule('academic', moduleAcademicSources)
+        this._store.registerModule(this._storeModuleName, this._storeModule )
+    }
+
+    get store() {
+        return this._store;
+    }
+
+    get storeModuleName() {
+        return this._storeModuleName;
+    }
+
+    get name() {
+        return this._options.name;
+    }
+
+    get module() {
+        return this._options.module;
+    }
+
+
 
     /**
      * Saves the API interface
@@ -158,53 +212,6 @@ class SourceServiceProvider {
         return this._api;
     }
 
-    /**
-     * Saves the Vuex Store
-     * 
-     * @param {VuexStore} store - Quill instance where is the initialized
-     * @param {string} name - The module name
-     * controller.
-     */
-    setStore(store, name = null) {
-        name = name ? name : this._options.name;
-        if (this._store != null) {
-            console.warn('Store already set, will be overwritten.')
-        }
-        this._store = store;
-        this._moduleName = name;
-    }
-
-    get store() {
-        return this._store;
-    }
-
-    get moduleName() {
-        return this._moduleName;
-    }
-
-
-
-    /**
-     * Get the options object for the module.
-     * 
-     * It proxies the handler for the current class instance 
-     * methods.
-     */
-    get citationsOptions() {
-        return this.cachedCitationsOptions;
-    }
-
-    get name() {
-        return this._options.name;
-    }
-
-    get module() {
-        return this._options.module;
-    }
-
-    get controller() {
-        return this._controller ? this._controller : null;
-    }
 
 }
 

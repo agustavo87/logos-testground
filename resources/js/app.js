@@ -86,10 +86,3 @@ const myApp = new Vue({
 
 myApp.$mount(el)
 window.myApp = myApp;
-
-
-window.testPut = function () {
-  let ctrlr = window.logosSSP.get("citation_vancouver").controller;
-  let payload = {key: 'gus2020', controller: ctrlr};
-  store.dispatch('academic/put', payload);
-}

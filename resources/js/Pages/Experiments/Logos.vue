@@ -9,19 +9,31 @@
     />
     <div class=" max-w-xl mx-auto">
         <h2 class="font-semibold text-xl mt-5 mb-0">Fuentes del documento</h2>
-        <document-sources-list />
+        <document-sources-list 
+            :store-name="sources.Vancouver.storeName"
+            :module-name="sources.Vancouver.name"
+        />
     </div>
     <div class=" max-w-xl mx-auto">
         <h2 class="font-semibold text-xl mt-5 mb-0">Insertar Fuente</h2>
-        <select-source />
+        <select-source 
+            :store-name="sources.Vancouver.storeName"
+            :module-name="sources.Vancouver.name"
+        />
     </div>
     <div class=" max-w-xl mx-auto">
         <h2 class="font-semibold text-xl mt-5 mb-0">Agregar nueva fuente</h2>
-        <add-source />
+        <add-source 
+            :store-name="sources.Vancouver.storeName"
+            :module-name="sources.Vancouver.name"
+        />
     </div >
     <div class=" max-w-xl mx-auto">
         <h2 class="font-semibold text-xl mt-5 mb-0">Fuentes disponibles</h2>
-        <source-list />
+        <source-list 
+            :store-name="sources.Vancouver.storeName"
+            :module-name="sources.Vancouver.name"
+        />
     </div>
 </div>
 
@@ -31,7 +43,7 @@
 <script>
 import Logos from '../../Logos/Components/LogosQuill'
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
-import moduleAcademicSources from '../../Logos/Modules/AcademicSources'
+// import moduleAcademicSources from '../../Logos/Modules/AcademicSources'
 import AddSource from '../../Logos/Components/DocumentSources/AddSource'
 import SourceList from '../../Logos/Components/DocumentSources/SourceList'
 import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
@@ -56,11 +68,17 @@ export default {
             post: {
                 content: {}
             },
-            settedDelta: {}
+            settedDelta: {},
+            sources: {
+                Vancouver: {
+                    storeName: Vancouver.storeModuleName, 
+                    name: Vancouver.name
+                }
+            }
         }
     },
     beforeCreate() {
-        this.$store.registerModule('academic', moduleAcademicSources)
+        // this.$store.registerModule('academic', moduleAcademicSources)
         Vancouver.setStore(this.$store);
     },
     components: {

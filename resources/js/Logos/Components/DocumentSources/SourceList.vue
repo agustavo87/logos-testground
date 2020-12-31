@@ -10,9 +10,10 @@
 <script>
 export default {
     name: 'SourceList',
+    props: ['moduleName', 'storeName'],
     computed: {
         sources() {
-            return this.$store.state.academic.repository
+            return this.$store.state[this.storeName].repository
         }
     }
 }

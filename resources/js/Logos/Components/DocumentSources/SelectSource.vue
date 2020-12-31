@@ -10,16 +10,21 @@
         </option>
       </lg-select>
       <p>Seleccionado: {{selected}}</p>
+      <lg-button class=" w-24 self-end mt-2" v-on:click="putSource">Insertar</lg-button>
 
 </div>
 </template>
 <script>
 import lgSelect from '../Base/Select';
+import lgButton from '../Base/Button';
 
 export default {
     name: 'SelectSource',
+    inject: ['logosSSP'],
+    props: ['moduleName', 'storeName'],
     components: {
-        lgSelect
+        lgSelect,
+        lgButton
     },
     data() {
         return {
@@ -28,8 +33,16 @@ export default {
     },
     computed: {
         sources() {
-            return this.$store.state.academic.repository
+            return this.$store.state[this.storeName].repository
         }
+    },
+    methods: {
+      putSource() {
+        this.$store.dispatch(this.storeName + '/put', {
+          key: this.selected,
+          controller: this.logosSSP.get(this.moduleName).controller
+        });
+      }
     }
 }
 </script>
