@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
 import Logos from '../../Logos/Components/LogosQuill'
+import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
 import DocumentSourcesList from '../../Logos/Components/DocumentSources/DocumentSourcesList'
 import AddSource from '../../Logos/Components/DocumentSources/AddSource'
 import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
