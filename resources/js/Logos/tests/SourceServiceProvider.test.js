@@ -93,10 +93,12 @@ it('saves the quill Citations module instance', () => {
     jest.resetModules();
     const mySSP = new SourceServiceProvider(SSPOptions, Store, API);
 
-    const mockStore = {};
+    const mockStore = {
+        registerModule: jest.fn(() => true)
+    };
     mySSP.setStore(mockStore);
     expect(mySSP.store).toBe(mockStore);
-    expect(mySSP.moduleName).toBe(mySSP.name); // default
+    expect(mySSP.storeModuleName).toBe(mySSP.name); // default
  });
 
  it('saves api', () => {
