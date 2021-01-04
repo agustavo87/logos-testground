@@ -38,7 +38,7 @@ class SourceServiceProvider {
      * @param {Object} storeModule  
      * @param {SourceCRUDInterface} api - Backend API
      */
-    constructor(options, storeModule,  api) {
+    constructor(options, storeModule,  api = null) {
         this._options = options;
         
         this._api = api

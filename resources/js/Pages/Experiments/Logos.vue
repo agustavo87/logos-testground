@@ -42,23 +42,13 @@
 
 <script>
 import Logos from '../../Logos/Components/LogosQuill'
-import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
 import DocumentSourcesList from '../../Logos/Components/DocumentSources/DocumentSourcesList'
 import AddSource from '../../Logos/Components/DocumentSources/AddSource'
 import SelectSource from '../../Logos/Components/DocumentSources/SelectSource'
 import SourceList from '../../Logos/Components/DocumentSources/SourceList'
 
-const logosSSP = new Map();
-logosSSP.set(Vancouver.name, Vancouver);
-window.logosSSP = logosSSP;
 
 export default {
-    sources: logosSSP,
-    provide () {
-        return {
-            logosSSP
-        }
-    },
     data() {
         return {
             post: {
@@ -67,14 +57,15 @@ export default {
             settedDelta: {},
             sources: {
                 Vancouver: {
-                    storeName: Vancouver.storeModuleName, 
-                    name: Vancouver.name
+                    storeName: this.$logos.SSPs['vancouver'].storeModuleName,
+                    name: 'vancouver'
                 }
             }
         }
     },
-    beforeCreate() {
-        Vancouver.setStore(this.$store);
+    mounted() {
+        /** @todo for debug: remove in prod. */
+        console.log(this.$logos) 
     },
     components: {
         Logos,

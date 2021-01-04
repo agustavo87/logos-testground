@@ -1,8 +1,6 @@
-
 import Quill from 'quill/core';
 
 import Toolbar from 'quill/modules/toolbar';
-// import BubbleTheme from 'quill/themes/bubble';
 import BubbleTheme from './quill/themes/bubble';
 
 import Bold from 'quill/formats/bold';
@@ -35,12 +33,8 @@ const quillComponents = {
     'formats/video': Video,
 }
 
-const quillComponentsArray = [
-    SourceBlot
-]
 
-
-//safe register. Avouds overwritting.
+// Safe register Quills imports. Avoids overwritting.
 for (const [name, component] of Object.entries(quillComponents)) {
     if (!Quill.imports.hasOwnProperty(name)) {
         Quill.register(name, component);
@@ -49,14 +43,47 @@ for (const [name, component] of Object.entries(quillComponents)) {
     }
 }
 
-
-
+/** @todo averiguar con que nombre se lo puede registrar */
 Quill.register(SourceBlot);
 
-
 const logos = {
-    Quill
+    Quill,
+    SSPs : {},
+    
+    registerSSPs: function (SSPs) {
+        SSPs.forEach(SSP => {
+            SSP.register(this.Quill);
+            this.SSPs[SSP.name] = SSP;
+        });
+    },
+
+    registerStoreModules: function (store) {
+        for(const sspName in this.SSPs) {
+            this.SSPs[sspName].setStore(store, sspName)
+        }
+    },
+
+    setControllers(quill) {
+        for(const sspName in this.SSPs) {
+            this.SSPs[sspName].setController(quill)
+        }
+    },
+
+    getStoresData() {
+        for(const sspName in this.SSPs) {
+            this.SSPs[sspName].setController(quill)
+        }
+    }
 }
+
+/** 
+ * @todo crear método para guardar controladores (módulos) en cada SSP una vez
+ * inicalizado quill.
+ * 
+ * @todo Crear método para registrar los módulos, una vez que se tiene el store de Vuex.
+ * 
+ * @todo Crear un método para inyectar los SSPs configurados
+ */
 
 export {logos};
 

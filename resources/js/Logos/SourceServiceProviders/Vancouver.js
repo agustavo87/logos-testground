@@ -94,5 +94,5 @@ class VancouverSSP extends SourceServiceProvider {
 
 // const store = {}; // temp mocks
 const api = {};
-const Vancouver = new VancouverSSP(VancouverSSPOptions, VancouverVuexModule, api)
+const Vancouver = new VancouverSSP(VancouverSSPOptions, VancouverVuexModule)
 export default Vancouver;

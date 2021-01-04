@@ -20,7 +20,6 @@ import lgButton from '../Base/Button';
 
 export default {
     name: 'SelectSource',
-    inject: ['logosSSP'],
     props: ['moduleName', 'storeName'],
     components: {
         lgSelect,
@@ -40,7 +39,7 @@ export default {
       putSource() {
         this.$store.dispatch(this.storeName + '/put', {
           key: this.selected,
-          controller: this.logosSSP.get(this.moduleName).controller
+          controller: this.$logos.SSPs[this.moduleName].controller
         });
       }
     }

@@ -29,11 +29,11 @@
 
 // import Quill from "../quill/quill";
 // import SourceBlot from 'dsm/quill/blots/source'
-import {logos} from '../logos'
+// import {logos} from '..'
 import { getDelta } from "../utils/functions";
 
-const Quill = logos.Quill; // aha!
-window.logos = logos;
+// const Quill = logos.Quill; // aha!
+// window.logos = logos;
 
 let toolbarOptions = [
     ['bold', 'italic'], 
@@ -44,7 +44,7 @@ export default {
     name: "Logos",
     quill: null,
     inheritAttrs: false,
-    inject: ['logosSSP'],
+    // inject: ['logosSSP'],
     props: {
         options: {
             type: Object, 
@@ -85,7 +85,8 @@ export default {
 
     created () {
         // this.registerSourceBlot();
-        this.registerSourceServiceProviders();
+        this.setModulesOptions()
+        // this.registerSourceServiceProviders();
     },
 
     /** @fires Quill#created */
@@ -96,8 +97,8 @@ export default {
                 container: this.$refs.toolbar
             };
 
-            this.$options.quill = new Quill(this.$refs.quill, this.options);
-            this.registerSourceModules();
+            this.$options.quill = new this.$logos.Quill(this.$refs.quill, this.options);
+            this.$logos.setControllers(this.$options.quill)
 
             window.quill = this.$options.quill;
             
@@ -164,17 +165,16 @@ export default {
         //         Quill.register(SourceBlot);
         //     }
         // },
-        registerSourceServiceProviders () {
-            this.logosSSP.forEach((SSP, name) => {
-                SSP.register(Quill);
-                this.options['modules'][name] = SSP.citationsOptions;
-            });
+        setModulesOptions () {
+            for (const sspName in this.$logos.SSPs) {
+                this.options['modules'][sspName] = this.$logos.SSPs[sspName].citationsOptions;
+            } 
         },
-        registerSourceModules () {
-            this.logosSSP.forEach((SSP, name) => {
-                SSP.setController(this.$options.quill)
-            })
-        }
+        // registerSourceModules () {
+        //     this.logosSSP.forEach((SSP, name) => {
+        //         SSP.setController(this.$options.quill)
+        //     })
+        // }
     },
     watch: {
         /** 

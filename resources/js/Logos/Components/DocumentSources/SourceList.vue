@@ -3,6 +3,7 @@
         <ul class="list-disc">
             <li v-for="source in sources" :key="source.key">
                 {{ source.data }}
+                a
             </li>
         </ul>
 </div>
