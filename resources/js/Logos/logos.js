@@ -1,8 +1,9 @@
+
 import Quill from 'quill/core';
 
 import Toolbar from 'quill/modules/toolbar';
 // import BubbleTheme from 'quill/themes/bubble';
-import BubbleTheme from './themes/bubble';
+import BubbleTheme from './quill/themes/bubble';
 
 import Bold from 'quill/formats/bold';
 import Italic from 'quill/formats/italic';
@@ -16,10 +17,10 @@ import List, {ListItem} from "quill/formats/list";
 import Image from "quill/formats/image";
 import Video from "quill/formats/video";
 
-// import SourceBlot from './blots/source';
+import SourceBlot from 'dsm/quill/blots/source'
 
-// Modulos, temas y formatos de Quill
-Quill.register({
+
+const quillComponents = {
     'modules/toolbar': Toolbar,
     'themes/bubble': BubbleTheme,
     'formats/bold': Bold,
@@ -32,19 +33,30 @@ Quill.register({
     'formats/header': Header,
     'formats/image': Image,
     'formats/video': Video,
-});
+}
 
-// Blot específico del editor
-// Quill.register(SourceBlot);
+const quillComponentsArray = [
+    SourceBlot
+]
 
-//Extensiones (de ejemplo).
-// require('./extensions/bold')(Quill);
 
-/**
- * TODO: Crear una UI para agregar imágenes
- * TODO: Agregar posibilidad de Agregar Tablas
- * TODO: Agregar la posibilidad de agregar la leyenda a imágenes y tablas.
- * TODO: Colocar algunos controles en una sidebar (como en el ejemplo de clon de Medium).
- */
+//safe register. Avouds overwritting.
+for (const [name, component] of Object.entries(quillComponents)) {
+    if (!Quill.imports.hasOwnProperty(name)) {
+        Quill.register(name, component);
+    } else {
+        console.warn('componente: ' + name + ' ya se encuentra registrado')
+    }
+}
 
-// export default Quill;
+
+
+Quill.register(SourceBlot);
+
+
+const logos = {
+    Quill
+}
+
+export {logos};
+

@@ -27,11 +27,13 @@
 
 <script>
 
-import Quill from "../quill/quill";
-import SourceBlot from 'dsm/quill/blots/source'
+// import Quill from "../quill/quill";
+// import SourceBlot from 'dsm/quill/blots/source'
+import {logos} from '../logos'
 import { getDelta } from "../utils/functions";
 
-window.Quill = Quill;
+const Quill = logos.Quill; // aha!
+window.logos = logos;
 
 let toolbarOptions = [
     ['bold', 'italic'], 
@@ -82,7 +84,7 @@ export default {
     },
 
     created () {
-        this.registerSourceBlot();
+        // this.registerSourceBlot();
         this.registerSourceServiceProviders();
     },
 
@@ -156,12 +158,12 @@ export default {
                 }
             }
         },
-        registerSourceBlot() {
-            if(!Quill.imports.hasOwnProperty('formats/source')) {
-                // console.log('registrando source blot');
-                Quill.register(SourceBlot);
-            }
-        },
+        // registerSourceBlot() {
+        //     if(!Quill.imports.hasOwnProperty('formats/source')) {
+        //         // console.log('registrando source blot');
+        //         Quill.register(SourceBlot);
+        //     }
+        // },
         registerSourceServiceProviders () {
             this.logosSSP.forEach((SSP, name) => {
                 SSP.register(Quill);

@@ -1,6 +1,6 @@
 import SourceServiceProvider from '../SourceServiceProviders/SourceServiceProvider';
 import {SourceTypes} from 'dsm/DSM/SourceTypes';
-import Quill from 'quill';
+import Quill from 'quill/core';
 import Citations from 'dsm/quill/modules/Citations'
 
 
