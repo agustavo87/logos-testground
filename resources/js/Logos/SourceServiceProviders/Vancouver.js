@@ -31,6 +31,19 @@ export const VancouverSSPOptions = {
     }
 };
 
+/**
+ * @typedef SourceItem
+ * @type {object}
+ * @property {string} key
+ * @property {string} data
+ */
+
+/**
+ * Vuex Store
+ * 
+ * - repository: sources available
+ * - document: sources attached to the document.
+ */
 const VancouverVuexModule = {
     namespaced: true, 
     state: () => ({
@@ -47,17 +60,37 @@ const VancouverVuexModule = {
       document: new Map()
     }),
     mutations: {
+      /**
+       * Saves a source in the repository
+       * 
+       * @param {*} state 
+       * @param {SourceItem} source
+       */
       save (state, source) {
         state.repository.push({
           key: source.key,
           data: source.data
         })
       },
+
+      /**
+       * Puts a source in the document store.
+       * 
+       * @param {*} state 
+       * @param {SourceItem} source
+       */
       put (state, source) {
         state.document.set(source.key, source);
       }
     },
     actions: {
+      /**
+       * Puts a new source
+       * @param {*} context 
+       * @param {object} payload 
+       * @param {string} payload.key
+       * @param {Citations} payload.controller
+       */
       put (context, payload) {
         context.commit('put', context.state.repository.find(source => source.key == payload.key));
         payload.controller.put(payload.key)
@@ -68,26 +101,18 @@ const VancouverVuexModule = {
 
 class VancouverSSP extends SourceServiceProvider {
 
+    /** @type {ReferenceRenderCallback} */
     create(node, data, controller) {
-        // console.log('VancouverSSP.create.this:', this)
-        // if(!this.hasOwnProperty('_options')) {
-        //     console.error('error! no existe el objeto \'this\' correcto')
-        // }
-
         super.create(node, data, controller)
     }
+
+    /** @type {ReferenceRenderCallback} */
     update(node, data, controller) {
-        // console.log('VancouverSSP.create.this:', this)
-        // if(!this.hasOwnProperty('_options')) {
-        //     console.error('error! no existe el objeto \'this\' correcto')
-        // }
         super.update(node, data, controller)
     }
+
+    /** @type {ReferenceRenderCallback} */
     remove(node, data, controller) {
-        // console.log('VancouverSSP.create.this:', this)
-        // if(!this.hasOwnProperty('_options')) {
-        //     console.error('error! no existe el objeto \'this\' correcto')
-        // }
         super.remove(node, data, controller)
     }
 }

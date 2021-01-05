@@ -1,3 +1,4 @@
+/** Interface for dealing with sources */
 export default class SourceAPI {
 
     /**

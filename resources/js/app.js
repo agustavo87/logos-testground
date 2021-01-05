@@ -15,7 +15,7 @@ import route from 'ziggy';
 import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
 
 
-// Start store
+// Start Vuex store
 // & register it in logos
 Vue.use(Vuex);
 const store = new Vuex.Store();

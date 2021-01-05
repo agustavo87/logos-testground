@@ -16,6 +16,7 @@ import Image from "quill/formats/image";
 import Video from "quill/formats/video";
 
 import SourceBlot from 'dsm/quill/blots/source'
+import SourceServiceProvider from './SourceServiceProviders/SourceServiceProvider';
 
 
 const quillComponents = {
@@ -50,6 +51,11 @@ const logos = {
     Quill,
     SSPs : {},
     
+    /**
+     * Registers the SSPs modules in Quill.
+     * 
+     * @param {Array.<SourceServiceProvider>} SSPs 
+     */
     registerSSPs: function (SSPs) {
         SSPs.forEach(SSP => {
             SSP.register(this.Quill);
@@ -57,33 +63,30 @@ const logos = {
         });
     },
 
+    /**
+     * Registers the SSPs Vuex modules into the
+     * store.
+     * 
+     * @param {VuexStore} store - VuexStore
+     */
     registerStoreModules: function (store) {
         for(const sspName in this.SSPs) {
             this.SSPs[sspName].setStore(store, sspName)
         }
     },
 
+    /**
+     * Gets from Quill instance the initialized Sources Modules
+     * 
+     * @param {Quill} quill - Quill instance 
+     */
     setControllers(quill) {
         for(const sspName in this.SSPs) {
             this.SSPs[sspName].setController(quill)
         }
     },
-
-    getStoresData() {
-        for(const sspName in this.SSPs) {
-            this.SSPs[sspName].setController(quill)
-        }
-    }
 }
 
-/** 
- * @todo crear método para guardar controladores (módulos) en cada SSP una vez
- * inicalizado quill.
- * 
- * @todo Crear método para registrar los módulos, una vez que se tiene el store de Vuex.
- * 
- * @todo Crear un método para inyectar los SSPs configurados
- */
 
 export {logos};
 

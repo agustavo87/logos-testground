@@ -3,6 +3,8 @@
 /** @typedef {import('vuex').Store}  Store*/
 /** @typedef {import('quill').default}  Quill*/
 
+import SourceAPI from './abstract/Api';
+
 
 /**
  * @typedef SourceServiceProviderOptions
@@ -198,8 +200,7 @@ class SourceServiceProvider {
     /**
      * Saves the API interface
      * 
-     * @param {Object} api - Quill instance where is the initialized
-     * controller.
+     * @param {SourceAPI} api 
      */
     setAPI(api) {
         if (this._api != null) {

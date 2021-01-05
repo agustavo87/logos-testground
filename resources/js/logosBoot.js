@@ -1,9 +1,8 @@
 
 /**
- * Configuración y Preparación de Logos para los requerimientos
- * del entorno.
+ * Configuration and SetUp of Logos
  * 
- * - Seleccionar Servicios inicializados.
+ * - Choose the SSPs to be used, and register its.
  */
 
 import {logos} from './Logos/logos'

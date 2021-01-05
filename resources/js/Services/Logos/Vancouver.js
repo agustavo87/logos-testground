@@ -6,7 +6,7 @@
  */
 import Vancouver from '../../Logos/SourceServiceProviders/Vancouver'
 
-
+// Actually, it has to be and SourceApi implementation.
 Vancouver.setAPI({
     index: () => true,
     store: (data) => true,

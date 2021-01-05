@@ -41,6 +41,9 @@
 </template>
 
 <script>
+/**
+ * IMPORTANT: ALL LOGOS EXPECTS THE $logos INSTANCE PROPERTY
+ */
 import Logos from '../../Logos/Components/LogosQuill'
 import DocumentSourcesList from '../../Logos/Components/DocumentSources/DocumentSourcesList'
 import AddSource from '../../Logos/Components/DocumentSources/AddSource'
