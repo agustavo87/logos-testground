@@ -2,7 +2,9 @@
 /** @typedef {import('dsm/quill/modules/Citations').default} Citations */
 /** @typedef {import('vuex').Store}  Store*/
 /** @typedef {import('quill').default}  Quill*/
+/** @typedef {import('dsm/quill/modules/Citations').ReferenceRenderCallback} ReferenceRenderCallback */
 
+import Reference from 'dsm/DSM/Reference';
 import SourceAPI from './abstract/Api';
 
 
@@ -65,7 +67,7 @@ class SourceServiceProvider {
      * Handles the Citations 'create' callback
      * 
      * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - Of the reference {i, key} 
+     * @param {{i: number, id: number, key:string}} data - i=null, becouse is not yey setted
      * @param {Citations} controller - The citations object that manage the Reference
     */
     create(node, data, controller) {
@@ -79,7 +81,7 @@ class SourceServiceProvider {
      * Handles the Citations 'update' callback
      * 
      * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - Of the reference {i, key} 
+     * @param {{i: number, id: number, key:string}} data
      * @param {Citations} controller - The citations object that manage the Reference
     */
     update(node, data, controller) {
@@ -93,7 +95,7 @@ class SourceServiceProvider {
      * Handles the Citations 'remove' callback
      * 
      * @param {HTMLElement} node - The node of the quill embed element
-     * @param {object} data - {i, key. id} 
+     * @param {{i: number, id: number, key:string}} data
      * @param {Citations} controller - The citations object that manage the Reference
     */
     remove(node, data, controller) {
