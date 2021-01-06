@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Logos - @yield('title')</title>
+    <title>Arete - @yield('title', 'La ciencia del mejoramiento')</title>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
   </head>
     <body>
-        <div class="container">
+
             @yield('content')
-        </div>
+
     </body>
 </html>

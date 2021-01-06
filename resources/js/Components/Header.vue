@@ -1,5 +1,7 @@
 <template>
-<header class="bg-gray-900 sm:flex sm:justify-between sm:px-4 sm:py-3 sm:items-center">
+<header 
+  class="bg-gray-900 sm:flex sm:justify-between sm:px-4 sm:py-3 sm:items-center"
+>
   <div class="flex justify-between items-center px-4 py-3 sm:p-0">
     <!-- Logo -->
     <div>

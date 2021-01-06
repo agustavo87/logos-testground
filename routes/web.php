@@ -43,7 +43,7 @@ Route::group([
 ], function () {
 
     Route::get('/', function (Request $request) {
-        return view('welcome');
+        return view('landing');
     })->name('landing');
 
     Route::get('home', function () {
@@ -80,6 +80,14 @@ Route::group([
             ->name('update');
     });
 
+    Route::group([
+        'prefix' => 'token',
+        'name' => 'token.'
+    ], function () { 
+        Route::get('create', function (Request $request) {
+            return 'hola';
+        });
+    });
 
     Route::get('logos', [LogosController::class, 'create'])
         ->name('logos.show');
