@@ -5,7 +5,7 @@
 /** @typedef {import('dsm/quill/modules/Citations').ReferenceRenderCallback} ReferenceRenderCallback */
 
 import Reference from 'dsm/DSM/Reference';
-import SourceAPI from './abstract/Api';
+import SourceAPI from './abstract/SourceAPI';
 
 
 /**

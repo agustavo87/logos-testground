@@ -95,12 +95,18 @@ Route::group([
     Route::put('/locale', [LocaleController::class, 'update'])->name('locale');
 
 
-    Route::apiResource('users.sources', UserSourceController::class)->scoped([
-        'source' => 'key'
-    ])->middleware('auth'); // ver que significa auth:api
+
     
     Route::get('/test/source/{source:key}', function (Request $request, Source $source) {
         return new SourceResource($source);
+    });
+
+    Route::group([
+        'prefix' => 'xhr',
+    ], function () {
+        Route::apiResource('users.sources', UserSourceController::class)->scoped([
+            'source' => 'key'
+        ])->middleware('auth'); // ver que significa auth:api
     });
     
     Route::get('/test/user/{user}/sources', function (Request $request, User $user) {

@@ -87,7 +87,7 @@ class SourcesTest extends TestCase
         $data = 'Gustavo, A. (2020). El ocaso del menemismo amarillo. Viñeta2: Buenos Aires.';
         $response = $this
             // ->actingAs($this->user)
-            ->postJson("/users/{$this->user->id}/sources", [
+            ->postJson(route('users.sources.store', ['user' => $this->user->id]), [
                 'key' => $key,
                 'data' => $data
         ]);
@@ -112,7 +112,8 @@ class SourcesTest extends TestCase
         $data = 'Gustavo, A. (2020). El ocaso del menemismo amarillo. Viñeta2: Buenos Aires.';
         $response = $this
             ->actingAs($this->user)
-            ->postJson("/users/{$this->user->id}/sources", [
+            // ->postJson("/users/{$this->user->id}/sources", [
+            ->postJson(route('users.sources.store', ['user' => $this->user->id]), [
                 'key' => $key,
                 'data' => $data
         ]);
@@ -143,7 +144,8 @@ class SourcesTest extends TestCase
         // $key = 'gus2020';
         $response = $this
             ->actingAs($this->user)
-            ->getJson("/users/{$this->user->id}/sources/$key");
+            // ->getJson("/users/{$this->user->id}/sources/$key");
+            ->getJson(route('users.sources.show', ['user' => $this->user->id, 'source' => $key]));
 
         
         $this->logStatus($response, 200);
@@ -170,7 +172,8 @@ class SourcesTest extends TestCase
         $newData = "Gustavo R., A. (2020). El resultado siniestro. Arkadia: Buenos Aires.";
         $response = $this
             ->actingAs($this->user)
-            ->putJson("/users/{$this->user->id}/sources/$key", [
+            // ->putJson("/users/{$this->user->id}/sources/$key", [
+            ->putJson(route('users.sources.update', ['user' => $this->user->id, 'source' => $key]), [
                 'data' => $newData
             ]);
         $this->logStatus($response, 200);
@@ -199,7 +202,8 @@ class SourcesTest extends TestCase
         $this->assertTrue($this->user->sources->contains('key', $key));
         $response = $this
             ->actingAs($this->user)
-            ->deleteJson("/users/{$this->user->id}/sources/$key");
+            // ->deleteJson("/users/{$this->user->id}/sources/$key");
+            ->deleteJson(route('users.sources.destroy', ['user' => $this->user->id, 'source' => $key]));
 
         $this->logStatus($response, 200);
         $response
@@ -230,7 +234,9 @@ class SourcesTest extends TestCase
         $perPage = 3;
         $response = $this
             ->actingAs($this->user)
-            ->getJson("users/{$this->user->id}/sources?perpage={$perPage}");
+            // ->getJson("users/{$this->user->id}/sources?perpage={$perPage}");
+            // ->getJson("users/{$this->user->id}/sources?perpage={$perPage}");
+            ->getJson(route('users.sources.index', ['user' => $this->user->id, 'perpage' => $perPage]));
         $this->logStatus($response, 200);
         $response->dump();
         $response->assertOk();

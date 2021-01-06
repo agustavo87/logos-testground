@@ -15,13 +15,14 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    // 'paths' => ['*'],
+    'paths' => ['api/*', 'xhr/*'],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*'],
 
     'allowed_headers' => ['*'],
 
