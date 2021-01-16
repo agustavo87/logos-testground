@@ -39,7 +39,7 @@ class LocaleController extends Controller
         $previous = url($previous);
 
 
-        if ($request->isJson()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'language' => $data['language'],
                 'redirect' => $previous

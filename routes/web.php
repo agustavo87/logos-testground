@@ -93,36 +93,36 @@ Route::group([
         ->name('logos.show');
 });
 
-    Route::get('stage/{experiment?}', function (Request $request, $experiment = null) {
-        $prefix = $experiment ? 'Experiments/' : 'Staging';
-        return Inertia::render($prefix . $experiment, [
-            'request' => $request,
-        ]);
-    });
+Route::get('stage/{experiment?}', function (Request $request, $experiment = null) {
+    $prefix = $experiment ? 'Experiments/' : 'Staging';
+    return Inertia::render($prefix . $experiment, [
+        'request' => $request,
+    ]);
+});
 
-    Route::put('/locale', [LocaleController::class, 'update'])->name('locale');
+Route::put('/locale', [LocaleController::class, 'update'])->name('locale');
 
 
 
-    
-    Route::get('/test/source/{source:key}', function (Request $request, Source $source) {
-        return new SourceResource($source);
-    });
 
-    Route::group([
-        'prefix' => 'xhr',
-    ], function () {
-        Route::apiResource('users.sources', UserSourceController::class)->scoped([
-            'source' => 'key'
-        ])->middleware('auth'); // ver que significa auth:api
-    });
-    
-    Route::get('/test/user/{user}/sources', function (Request $request, User $user) {
+Route::get('/test/source/{source:key}', function (Request $request, Source $source) {
+    return new SourceResource($source);
+});
 
-        $sources_paginated = DB::table('sources')->where('user_id', $user->id)->paginate(2);
+Route::group([
+    'prefix' => 'xhr',
+], function () {
+    Route::apiResource('users.sources', UserSourceController::class)->scoped([
+        'source' => 'key'
+    ])->middleware('auth'); // ver que significa auth:api
+});
 
-        // return (new SourceCollection($sources_paginated, $user))
-        return (new SourceCollection($sources_paginated, $user))
-            ->response()
-            ->header('X-Tu-Mama', 'Me mima');
-    })->name('test.user.sources');
+Route::get('/test/user/{user}/sources', function (Request $request, User $user) {
+
+    $sources_paginated = DB::table('sources')->where('user_id', $user->id)->paginate(2);
+
+    // return (new SourceCollection($sources_paginated, $user))
+    return (new SourceCollection($sources_paginated, $user))
+        ->response()
+        ->header('X-Tu-Mama', 'Me mima');
+})->name('test.user.sources');

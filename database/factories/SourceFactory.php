@@ -23,7 +23,7 @@ class SourceFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->lastName;
+        $lastName = $this->faker->lastName;
         $year = $this->faker->unique()->numberBetween(1970, 2021);
         
         $nameInitial = Str::upper($this->faker->randomLetter);
@@ -33,8 +33,8 @@ class SourceFactory extends Factory
 
         return [
             'user_id' => User::factory(),
-            'key' => "$name$year",
-            'data' => "$name, $nameInitial. ($year). $title $editorial: $city."
+            'key' => "$lastName$year",
+            'data' => "$lastName, $nameInitial. ($year). $title $editorial: $city."
         ];
     }
 }

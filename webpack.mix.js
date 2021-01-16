@@ -35,4 +35,5 @@ mix.js('resources/js/app.js', 'public/js')
             },
         },
     })
-    .copyDirectory('resources/static/images', 'public/static/images' );
+    .copyDirectory('resources/static/images', 'public/static/images' )
+    .js('resources/js/utils.js', 'public/js');

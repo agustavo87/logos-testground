@@ -37,5 +37,8 @@
     </div>
     @endguest
 
+    <p><a href="#" data-toggle="saludo" data-toggle-class='p-5'>Alternar</a></p>
+    <p class=" bg-blue-400" data-toggled="saludo">Hola</p>
+
   </div>
 </x-layout>
